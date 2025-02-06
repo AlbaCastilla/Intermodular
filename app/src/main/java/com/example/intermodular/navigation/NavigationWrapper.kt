@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
+import com.example.intermodular.ui.screens.factEmitidas.form.PruebaBarraProgreso
 import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfo
 import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfoViewModel
 import com.example.intermodular.ui.screens.home.Home
@@ -26,7 +27,7 @@ fun NavigationWrapper (navController: NavHostController) {
     val femitidasInfoViewModel: FEmitidasInfoViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = AppScreens.Home.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.PruebaBarraProgreso.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel
@@ -58,6 +59,10 @@ fun NavigationWrapper (navController: NavHostController) {
             FormularioFE(
                 viewModel = formularioFEViewModel
             )
+        }
+
+        composable(AppScreens.PruebaBarraProgreso.ruta){
+            PruebaBarraProgreso()
         }
 
     }
