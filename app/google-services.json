@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "508747488825",
+    "project_id": "intermodular-26c92",
+    "storage_bucket": "intermodular-26c92.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508747488825:android:e718f1b5038182f71937e8",
+        "android_client_info": {
+          "package_name": "com.example.intermodular"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByxUW5eagrzo26f2Ut4nlB4MPBrIIoeTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
