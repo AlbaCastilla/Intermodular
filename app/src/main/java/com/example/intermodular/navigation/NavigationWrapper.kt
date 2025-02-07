@@ -27,7 +27,7 @@ fun NavigationWrapper (navController: NavHostController) {
     val femitidasInfoViewModel: FEmitidasInfoViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = AppScreens.PruebaBarraProgreso.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.FormularioFE.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel
