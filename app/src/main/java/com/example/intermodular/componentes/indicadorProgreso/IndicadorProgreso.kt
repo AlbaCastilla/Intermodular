@@ -1,4 +1,4 @@
-package com.example.intermodular.ui.screens.factEmitidas.form
+package com.example.intermodular.componentes.indicadorProgreso
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,17 +23,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.intermodular.navigation.AppScreens
 
 
 @Composable
-fun PruebaBarraProgreso(pasosTotales: Int = 3) {
-    var pasoActual by remember { mutableStateOf(0) }
+fun IndicadorProgreso(viewModel: IndicadorProgresoViewModel, pasosTotales: Int = 3) {
+    //var pasoActual by remember { mutableStateOf(0) }
+    val pasoActual by viewModel.pasoActual.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         // Línea de progreso con bolitas y líneas
         Row(
@@ -42,50 +45,34 @@ fun PruebaBarraProgreso(pasosTotales: Int = 3) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-//            for (i in 0 until pasosTotales) {
-//                StepCircle(isActive = i <= pasoActual)
-//                if (i < pasosTotales - 1) {
-//                    StepLine(isCompleted = i < pasoActual, modifier = Modifier.weight(1f))
-//                }
-//            }
+
             for (i in 0 until pasosTotales) {
                 // Dibuja el círculo del paso
                 StepCircle(isActive = i <= pasoActual)
 
-                // Si no es el último paso, dibuja la línea de conexión
-                val noEsUltimoPaso = i < pasosTotales - 1
-                if (noEsUltimoPaso) {
-                    val lineaCompletada = i < pasoActual
-                    StepLine(isCompleted = lineaCompletada, modifier = Modifier.weight(1f))
+                if (i < pasosTotales - 1) {
+                    StepLine(isCompleted = i < pasoActual, modifier = Modifier.weight(1f))
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        //BTN SIGUIENTE --> lo estoy pasando a los btns del propio formulario
+//        Button(
+//            onClick = { viewModel.avanzarPaso(pasosTotales) }
+//        ) {
+//            Text("Siguiente")
+//        }
 
-        // Botón para avanzar
-        Button(
-            onClick = {
-                if (pasoActual < pasosTotales - 1) {
-                    pasoActual++
-                }
-            }
-        ) {
-            Text("Siguiente")
-        }
+        //Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Botón para retroceder
-        Button(
-            onClick = {
-                if (pasoActual > 0) {
-                    pasoActual--
-                }
-            }
-        ) {
-            Text("Anterior")
-        }
+        //BTN ANTERIOR--> idem
+//        Button(
+//            onClick = {
+//                viewModel.retrocederPaso()
+//            }
+//        ) {
+//            Text("Anterior")
+//        }
     }
 }
 
