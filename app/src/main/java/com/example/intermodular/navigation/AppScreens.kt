@@ -7,5 +7,5 @@ sealed class AppScreens(val ruta: String){
     object FEmitidasInfo: AppScreens("FEmitidasInfo")
     object FormularioFE: AppScreens("FormularioFE")
 
-    object PruebaBarraProgreso: AppScreens("PruebaBarraProgreso")
+    object IndicadorProgreso: AppScreens("IndicadorProgreso")
 }

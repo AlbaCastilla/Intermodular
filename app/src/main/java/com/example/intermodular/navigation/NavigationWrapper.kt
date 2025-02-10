@@ -5,9 +5,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
+import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
-import com.example.intermodular.ui.screens.factEmitidas.form.PruebaBarraProgreso
 import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfo
 import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfoViewModel
 import com.example.intermodular.ui.screens.home.Home
@@ -26,6 +27,8 @@ fun NavigationWrapper (navController: NavHostController) {
     val registroViewModel: RegistroViewModel = viewModel()
     val femitidasInfoViewModel: FEmitidasInfoViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
+    val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
+
 
     NavHost(navController = navController, startDestination = AppScreens.FormularioFE.ruta) {
         composable(AppScreens.Home.ruta){
@@ -57,12 +60,15 @@ fun NavigationWrapper (navController: NavHostController) {
         //FACTURAS EMITIDAS - formulario
         composable(AppScreens.FormularioFE.ruta){
             FormularioFE(
-                viewModel = formularioFEViewModel
+                viewModel = formularioFEViewModel,
+                indicadorProgresoViewModel = indicadorProgresoViewModel
             )
         }
 
-        composable(AppScreens.PruebaBarraProgreso.ruta){
-            PruebaBarraProgreso()
+        composable(AppScreens.IndicadorProgreso.ruta){
+            IndicadorProgreso(
+                viewModel = indicadorProgresoViewModel
+            )
         }
 
     }

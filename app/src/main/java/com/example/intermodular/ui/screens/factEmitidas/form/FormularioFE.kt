@@ -33,9 +33,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
+import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
 
 @Composable
-fun FormularioFE(viewModel: FormularioFEViewModel) {
+fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: IndicadorProgresoViewModel) {
 
     //declaracion de las variables de nuestro viewModel
     val companiaNombre: String by viewModel.companiaNombre.observeAsState(initial = "")
@@ -54,12 +56,19 @@ fun FormularioFE(viewModel: FormularioFEViewModel) {
 
             Text(text = "Iniciar sesión")
 
+            //indicador de progreso
+//            IndicadorProgreso(
+//                viewModel = indicadorProgresoViewModel,
+//                pasosTotales = 3
+//            )
+
             //las llamadas al resto de funciones las haremos en FuncionesLogin
             FuncionesFormularioFE(
                 viewModel = viewModel,
                 companiaNombre = companiaNombre,
                 nif = nif,
-                direccion = direccion
+                direccion = direccion,
+                indicadorProgresoViewModel = indicadorProgresoViewModel
             )
         }
     }
@@ -67,12 +76,13 @@ fun FormularioFE(viewModel: FormularioFEViewModel) {
 }
 
 @Composable
-fun CardForm(companiaNombre: String, nif: String, direccion: String){
+fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorProgresoViewModel: IndicadorProgresoViewModel){
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5)),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
+
     ) {
         Column(
             modifier = Modifier
@@ -144,7 +154,10 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String){
             Spacer(modifier = Modifier.height(12.dp))
 
             Button(
-                onClick = { /* Acción del botón */ },
+                onClick = {
+                    /**aqui llamar a la funcion del indicador de progreso para avanzar*/
+                    indicadorProgresoViewModel.avanzarPaso(3)
+                },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -169,18 +182,27 @@ fun FuncionesFormularioFE(
     viewModel: FormularioFEViewModel,
     companiaNombre: String,
     nif: String,
-    direccion: String
+    direccion: String,
+    indicadorProgresoViewModel: IndicadorProgresoViewModel
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(Color(0xFFF5F5F5)),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ){
+        IndicadorProgreso(
+            viewModel = indicadorProgresoViewModel,
+            pasosTotales = 3
+        )
+
         CardForm(
             companiaNombre = companiaNombre,
             nif = nif,
-            direccion = direccion
+            direccion = direccion,
+            indicadorProgresoViewModel = indicadorProgresoViewModel
         )
     }
 }
