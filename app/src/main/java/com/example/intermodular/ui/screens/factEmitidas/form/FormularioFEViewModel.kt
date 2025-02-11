@@ -1,8 +1,10 @@
 package com.example.intermodular.ui.screens.factEmitidas.form
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 
 class FormularioFEViewModel: ViewModel() {
 
@@ -53,4 +55,48 @@ class FormularioFEViewModel: ViewModel() {
 
         return letraCalculada == letraIngresada
     }
+
+    // CREAMOS UNA FUNCIÓN PARA GENERAR LA CONEXION A LA BASE DE DATOS Y GUARDAR LOS DATOS DE LA FACTURA EMITIDA
+    fun guardarFacturaEmitida(companiaNombre: String, nif: String, direccion: String) {
+        val db = FirebaseFirestore.getInstance()
+        val coleccion = "facturas"
+
+        // Tomamos los valores actuales de LiveData
+        val companiaNombre = _companiaNombre.value ?: ""
+        val nif = _nif.value ?: ""
+        val direccion = _direccion.value ?: ""
+
+        db.collection(coleccion)
+            .add(
+                hashMapOf(
+                    "companiaNombre" to companiaNombre,
+                    "nif" to nif,
+                    "direccion" to direccion
+                )
+            )
+            .addOnSuccessListener {
+                // Limpiar los campos después del guardado
+                _companiaNombre.value = ""
+                _nif.value = ""
+                _direccion.value = ""
+                println("Se han guardado los datos bien")
+            }
+            .addOnFailureListener { e ->
+                println("Error adding document: $e")
+            }
+    }
+
+    fun actualizarCompaniaNombre(nuevoNombre: String) {
+        _companiaNombre.value = nuevoNombre
+    }
+
+    fun actualizarNif(nuevoNif: String) {
+        _nif.value = nuevoNif
+    }
+
+    fun actualizarDireccion(nuevaDireccion: String) {
+        _direccion.value = nuevaDireccion
+    }
+
+
 }

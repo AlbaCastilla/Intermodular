@@ -76,7 +76,7 @@ fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: I
 }
 
 @Composable
-fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorProgresoViewModel: IndicadorProgresoViewModel){
+fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorProgresoViewModel: IndicadorProgresoViewModel, viewModel: FormularioFEViewModel){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -113,7 +113,7 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
             )
             OutlinedTextField(
                 value = companiaNombre,
-                onValueChange = { /* = it*/ },
+                onValueChange = { viewModel.actualizarCompaniaNombre(it) },
                 singleLine = true,
                 label = { Text("Jane Doe") },
                 shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
@@ -129,7 +129,7 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
             )
             OutlinedTextField(
                 value = nif,
-                onValueChange = { /*nif = it*/ },
+                onValueChange = { viewModel.actualizarNif(it) },
                 singleLine = true,
                 label = { Text("00000000P") },
                 shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
@@ -145,7 +145,7 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
             )
             OutlinedTextField(
                 value = direccion,
-                onValueChange = { /*address = it*/ },
+                onValueChange = { viewModel.actualizarDireccion(it) },
                 singleLine = true,
                 label = { Text("xxxxxx") },
                 shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
@@ -155,8 +155,8 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
 
             Button(
                 onClick = {
-                    /**aqui llamar a la funcion del indicador de progreso para avanzar*/
-                    indicadorProgresoViewModel.avanzarPaso(3)
+                    // viewModel.guardarFacturaEmitida(companiaNombre, nif, direccion)
+                     indicadorProgresoViewModel.avanzarPaso(3)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
@@ -190,9 +190,8 @@ fun FuncionesFormularioFE(
             .fillMaxSize()
             .background(Color(0xFFF5F5F5)),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-
-    ){
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         IndicadorProgreso(
             viewModel = indicadorProgresoViewModel,
             pasosTotales = 3
@@ -202,6 +201,7 @@ fun FuncionesFormularioFE(
             companiaNombre = companiaNombre,
             nif = nif,
             direccion = direccion,
+            viewModel = viewModel, // Pasamos el ViewModel
             indicadorProgresoViewModel = indicadorProgresoViewModel
         )
     }
