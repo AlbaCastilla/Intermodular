@@ -30,7 +30,7 @@ fun NavigationWrapper (navController: NavHostController) {
     val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
 
 
-    NavHost(navController = navController, startDestination = AppScreens.FormularioFE.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.FEmitidasInfo.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel
@@ -53,7 +53,8 @@ fun NavigationWrapper (navController: NavHostController) {
         //FACTURAS EMITIDAS - info
         composable(AppScreens.FEmitidasInfo.ruta){
             FEmitidasInfo(
-                viewModel = femitidasInfoViewModel
+                viewModel = femitidasInfoViewModel,
+                indicadorProgresoViewModel = indicadorProgresoViewModel
             )
         }
 
