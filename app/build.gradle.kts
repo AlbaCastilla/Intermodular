@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.intermodular"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.firebase.firestore.ktx)
+    //implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,13 +75,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
-    // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
-
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-auth")
+//    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+//    // Import the BoM for the Firebase platform
+//    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+//
+//    // Add the dependency for the Firebase Authentication library
+//    // When using the BoM, you don't specify versions in Firebase library dependencies
+//    implementation("com.google.firebase:firebase-auth")
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
 
 }

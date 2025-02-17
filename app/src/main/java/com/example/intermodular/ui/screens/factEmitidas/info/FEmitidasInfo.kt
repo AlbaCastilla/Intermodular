@@ -143,16 +143,16 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(text = "Tax Type", modifier = Modifier.fillMaxWidth())
-            DropdownMenu(expanded = true, onDismissRequest = { }) {
-                taxOptions.forEach { tax ->
-                    DropdownMenuItem(onClick = {
-                        selectedTax = tax
-                        viewModel.updateTaxType(tax)
-                    }) {
-                        Text(text = tax)
-                    }
-                }
-            }
+//            DropdownMenu(expanded = true, onDismissRequest = { }) {
+//                taxOptions.forEach { tax ->
+//                    DropdownMenuItem(onClick = {
+//                        selectedTax = tax
+//                        viewModel.updateTaxType(tax)
+//                    }) {
+//                        Text(text = tax)
+//                    }
+//                }
+//            }
             Spacer(modifier = Modifier.height(12.dp))
 
 
