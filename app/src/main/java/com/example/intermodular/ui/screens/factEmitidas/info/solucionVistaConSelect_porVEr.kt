@@ -1,0 +1,108 @@
+package com.example.intermodular.ui.screens.factEmitidas.info
+
+@Composable
+fun CardForm2(viewModel: FEmitidasInfoViewModel, indicadorProgresoViewModel: IndicadorProgresoViewModel) {
+    val moneyCharge by viewModel.moneyCharge.observeAsState("")
+    val totalAccount by viewModel.totalAccount.observeAsState("0.00")
+    val taxType by viewModel.taxType.observeAsState(0.21) // Valor por defecto
+
+    val taxOptions = listOf("IVA", "ISR", "IEPS")
+    var selectedTax by remember { mutableStateOf("IVA") }
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF5F5F5)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .background(Color.White, shape = RoundedCornerShape(12.dp))
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Invoice's receiver information",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Please complete the following fields on the invoice receiver's information",
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+                color = Color.Gray
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Campo de entrada para Money Charge
+            OutlinedTextField(
+                value = moneyCharge,
+                onValueChange = { viewModel.updateMoneyCharge(it) },
+                singleLine = true,
+                label = { Text("Money charge") },
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Selector de impuestos
+            Text(text = "Tax Type", modifier = Modifier.fillMaxWidth())
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                OutlinedTextField(
+                    value = selectedTax,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Select Tax Type") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    taxOptions.forEach { tax ->
+                        DropdownMenuItem(
+                            text = { Text(tax) },
+                            onClick = {
+                                selectedTax = tax
+                                expanded = false
+                                viewModel.updateTaxType(tax)
+                            }
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Campo de Total (calculado automáticamente)
+            OutlinedTextField(
+                value = totalAccount,
+                onValueChange = {},
+                singleLine = true,
+                label = { Text("Total amount") },
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth(),
+                enabled = false // Deshabilitado porque se calcula automáticamente
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Botón Next
+            Button(
+                onClick = { indicadorProgresoViewModel.avanzarPaso(3) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(text = "Next", fontSize = 16.sp)
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(Icons.Default.ArrowForward, contentDescription = "Next", tint = Color.White)
+            }
+        }
+    }
+}
