@@ -7,3 +7,5 @@ package com.example.intermodular.models
      val direccion: String = "",
      //entiendo q por el prototipo q tenemos --> deberia haber otro atributo de moneyCharged y otro de TOTAL
  )
+
+
