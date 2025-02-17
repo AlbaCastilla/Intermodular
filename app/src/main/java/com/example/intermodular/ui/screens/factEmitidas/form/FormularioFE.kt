@@ -36,6 +36,11 @@ import androidx.lifecycle.MutableLiveData
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
 
+/**
+ * FORMULARIO DE AÑADIR FACTURA
+ */
+
+
 @Composable
 fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: IndicadorProgresoViewModel) {
 
