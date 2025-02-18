@@ -2,8 +2,10 @@ package com.example.intermodular.ui.screens.registro
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -45,12 +47,14 @@ fun Registro(viewModel: RegistroViewModel) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0xFFF5F5F5))
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
+                    .padding(paddingValues)
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(24.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()) // Enable scrolling
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = "Complete the following fields",
@@ -63,7 +67,8 @@ fun Registro(viewModel: RegistroViewModel) {
 
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .wrapContentHeight(), // Adjusts to content
                         shape = RoundedCornerShape(12.dp),
                         elevation = CardDefaults.elevatedCardElevation(4.dp),
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
@@ -71,7 +76,8 @@ fun Registro(viewModel: RegistroViewModel) {
                         Column(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .background(Color(0xFFF5F5F5)),
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Spacer(modifier = Modifier.height(8.dp))
@@ -221,19 +227,36 @@ fun Registro(viewModel: RegistroViewModel) {
                             }
 
                             Spacer(modifier = Modifier.height(20.dp))
+//
+//                            Button(
+//                                onClick = { viewModel.registrarUsuario() },
+//                                modifier = Modifier.fillMaxWidth(),
+//                                shape = RoundedCornerShape(8.dp)
+//                            ) {
+//                                Text(
+//                                    text = "Register",
+//                                    fontSize = 16.sp,
+//                                )
+//                            }
+                            val isFieldsFilled by viewModel.isFieldsFilled.observeAsState(initial = false)
 
                             Button(
-                                onClick = { viewModel.registrarUsuario() },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(8.dp)
+                                onClick = {
+                                    // Validate the form when the button is clicked
+                                    viewModel.validateForm()
+
+                                    // Register user if the form is valid
+                                    if (viewModel.isFormValid.value == true) {
+                                        viewModel.registrarUsuario()
+                                    }
+                                },
+                                enabled = isFieldsFilled,  // Button enabled only when all fields are filled
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text(
-                                    text = "Register",
-                                    fontSize = 16.sp,
-                                )
+                                Text("Register")
                             }
-                        }
-                    }
+
+                        }   }
                 }
             }
         }

@@ -308,55 +308,69 @@ class RegistroViewModel : ViewModel() {
 
     fun actualizarCompanyName(newCompanyName: String) {
         _companyName.value = newCompanyName
-        validateForm()
+        checkFieldsFilled()  // Check if all fields are filled
     }
 
     fun actualizarAddress(newAddress: String) {
         _address.value = newAddress
-        validateForm()
+        checkFieldsFilled()
     }
 
     fun actualizarEmail(newEmail: String) {
         _email.value = newEmail
-        validateForm()
+        checkFieldsFilled()
     }
 
     fun actualizarNif(newNif: String) {
         _nif.value = newNif
-        validateForm()
+        checkFieldsFilled()
     }
 
     fun actualizarPassword(newPassword: String) {
         _password.value = newPassword
-        validateForm()
+        checkFieldsFilled()
     }
 
     fun actualizarConfirmPassword(newConfirmPassword: String) {
         _confirmPassword.value = newConfirmPassword
-        validateForm()
+        checkFieldsFilled()
     }
 
-    private fun validateForm() {
-        val emailValid = isValidEmail(_email.value ?: "")
-        val passwordValid = _password.value?.length ?: 0 >= 6
-        val passwordsMatch = _password.value == _confirmPassword.value
-        val nifValid = isValidNif(_nif.value ?: "")
 
-        // Validar campos individualmente
+    private val _isFieldsFilled = MutableLiveData<Boolean>(false)
+    val isFieldsFilled: LiveData<Boolean> = _isFieldsFilled
+
+    // Update the fields checking function
+    private fun checkFieldsFilled() {
+        _isFieldsFilled.value = !(_companyName.value.isNullOrBlank() ||
+                _address.value.isNullOrBlank() ||
+                _email.value.isNullOrBlank() ||
+                _nif.value.isNullOrBlank() ||
+                _password.value.isNullOrBlank() ||
+                _confirmPassword.value.isNullOrBlank())
+    }
+
+    fun validateForm() {
+        val emailValid = !(_email.value.isNullOrBlank()) && isValidEmail(_email.value ?: "")
+        val passwordValid = (_password.value?.length ?: 0) >= 6
+        val passwordsMatch = _password.value == _confirmPassword.value
+        val nifValid = !(_nif.value.isNullOrBlank()) && isValidNif(_nif.value ?: "")
+
         _companyNameError.value = if (_companyName.value.isNullOrBlank()) "El nombre de la empresa es obligatorio." else null
         _addressError.value = if (_address.value.isNullOrBlank()) "La dirección es obligatoria." else null
-        _emailError.value = if (!_email.value.isNullOrBlank() && !emailValid) "Por favor, ingrese un correo electrónico válido." else null
+        _emailError.value = if (_email.value.isNullOrBlank() || !emailValid) "Por favor, ingrese un correo electrónico válido." else null
         _nifError.value = if (_nif.value.isNullOrBlank() || !nifValid) "El NIF ingresado no es válido." else null
-        _passwordError.value = if (_password.value?.length ?: 0 < 6) "La contraseña debe tener al menos 6 caracteres." else null
-        _confirmPasswordError.value = if (_password.value != _confirmPassword.value) "Las contraseñas no coinciden." else null
+        _passwordError.value = if (_password.value.isNullOrBlank() || !passwordValid) "La contraseña debe tener al menos 6 caracteres." else null
+        _confirmPasswordError.value = if (_confirmPassword.value.isNullOrBlank() || !passwordsMatch) "Las contraseñas no coinciden." else null
 
-        // Validar si el formulario es válido
-        _isFormValid.value = _companyNameError.value == null &&
-                _addressError.value == null &&
-                _emailError.value == null &&
-                _nifError.value == null &&
-                _passwordError.value == null &&
-                _confirmPasswordError.value == null
+        _isFormValid.value = listOf(
+            _companyNameError.value,
+            _addressError.value,
+            _emailError.value,
+            _nifError.value,
+            _passwordError.value,
+            _confirmPasswordError.value
+        ).all { it == null }
     }
 
     private fun isValidEmail(email: String): Boolean {
@@ -368,6 +382,9 @@ class RegistroViewModel : ViewModel() {
     }
 
     fun registrarUsuario() {
+        // Validate form when button is clicked
+        validateForm()
+
         if (_isFormValid.value == true) {
             auth.createUserWithEmailAndPassword(_email.value ?: "", _password.value ?: "")
                 .addOnCompleteListener { task ->
@@ -400,6 +417,96 @@ class RegistroViewModel : ViewModel() {
         _confirmPassword.value = ""
     }
 }
+
+//    private fun validateForm() {
+//        val emailValid = isValidEmail(_email.value ?: "")
+//        val passwordValid = _password.value?.length ?: 0 >= 6
+//        val passwordsMatch = _password.value == _confirmPassword.value
+//        val nifValid = isValidNif(_nif.value ?: "")
+//
+//        // Validar campos individualmente
+//        _companyNameError.value = if (_companyName.value.isNullOrBlank()) "El nombre de la empresa es obligatorio." else null
+//        _addressError.value = if (_address.value.isNullOrBlank()) "La dirección es obligatoria." else null
+//        _emailError.value = if (!_email.value.isNullOrBlank() && !emailValid) "Por favor, ingrese un correo electrónico válido." else null
+//        _nifError.value = if (_nif.value.isNullOrBlank() || !nifValid) "El NIF ingresado no es válido." else null
+//        _passwordError.value = if (_password.value?.length ?: 0 < 6) "La contraseña debe tener al menos 6 caracteres." else null
+//        _confirmPasswordError.value = if (_password.value != _confirmPassword.value) "Las contraseñas no coinciden." else null
+//
+//        // Validar si el formulario es válido
+//        _isFormValid.value = _companyNameError.value == null &&
+//                _addressError.value == null &&
+//                _emailError.value == null &&
+//                _nifError.value == null &&
+//                _passwordError.value == null &&
+//                _confirmPasswordError.value == null
+//    }
+
+
+//private fun validateForm() {
+//    val emailValid = !(_email.value.isNullOrBlank()) && isValidEmail(_email.value ?: "")
+//    val passwordValid = (_password.value?.length ?: 0) >= 6
+//    val passwordsMatch = _password.value == _confirmPassword.value
+//    val nifValid = !(_nif.value.isNullOrBlank()) && isValidNif(_nif.value ?: "")
+//
+//    _companyNameError.value = if (_companyName.value.isNullOrBlank()) "El nombre de la empresa es obligatorio." else null
+//    _addressError.value = if (_address.value.isNullOrBlank()) "La dirección es obligatoria." else null
+//    _emailError.value = if (_email.value.isNullOrBlank() || !emailValid) "Por favor, ingrese un correo electrónico válido." else null
+//    _nifError.value = if (_nif.value.isNullOrBlank() || !nifValid) "El NIF ingresado no es válido." else null
+//    _passwordError.value = if (_password.value.isNullOrBlank() || !passwordValid) "La contraseña debe tener al menos 6 caracteres." else null
+//    _confirmPasswordError.value = if (_confirmPassword.value.isNullOrBlank() || !passwordsMatch) "Las contraseñas no coinciden." else null
+//
+//    _isFormValid.value = listOf(
+//        _companyNameError.value,
+//        _addressError.value,
+//        _emailError.value,
+//        _nifError.value,
+//        _passwordError.value,
+//        _confirmPasswordError.value
+//    ).all { it == null }
+//}
+//
+//
+//    private fun isValidEmail(email: String): Boolean {
+//        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+//    }
+//
+//    private fun isValidNif(nif: String): Boolean {
+//        return nif.length == 9 && nif[8].isLetter()
+//    }
+//
+//    fun registrarUsuario() {
+//        if (_isFormValid.value == true) {
+//            auth.createUserWithEmailAndPassword(_email.value ?: "", _password.value ?: "")
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        val usuario = hashMapOf(
+//                            "companiaNombre" to (_companyName.value ?: ""),
+//                            "nif" to (_nif.value ?: ""),
+//                            "direccion" to (_address.value ?: ""),
+//                            "email" to (_email.value ?: "")
+//                        )
+//                        usuariosCollection.add(usuario)
+//                            .addOnSuccessListener {
+//                                limpiarCampos()
+//                            }
+//                            .addOnFailureListener { e -> println("Error: $e") }
+//                    } else {
+//                        val error = task.exception
+//                        println("Error: $error")
+//                    }
+//                }
+//        }
+//    }
+//
+//    private fun limpiarCampos() {
+//        _companyName.value = ""
+//        _address.value = ""
+//        _email.value = ""
+//        _nif.value = ""
+//        _password.value = ""
+//        _confirmPassword.value = ""
+//    }
+//}
 
 //class RegistroViewModel : ViewModel() {
 //
