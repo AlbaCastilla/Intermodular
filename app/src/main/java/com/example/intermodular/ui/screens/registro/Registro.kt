@@ -89,7 +89,8 @@ fun Registro(viewModel: RegistroViewModel) {
                             )
                             OutlinedTextField(
                                 value = companyName,
-                                onValueChange = { viewModel.actualizarCompanyName(it) },
+                                onValueChange = { viewModel.actualizarCompanyName(it)
+                                    viewModel.checkErrorState() },
                                 singleLine = true,
                                 label = { Text("Company/personal full name") },
                                 modifier = Modifier.fillMaxWidth(),
@@ -113,7 +114,8 @@ fun Registro(viewModel: RegistroViewModel) {
                             )
                             OutlinedTextField(
                                 value = address,
-                                onValueChange = { viewModel.actualizarAddress(it) },
+                                onValueChange = { viewModel.actualizarAddress(it)
+                                    viewModel.checkErrorState()},
                                 singleLine = true,
                                 label = { Text("Address") },
                                 modifier = Modifier.fillMaxWidth(),
@@ -137,7 +139,8 @@ fun Registro(viewModel: RegistroViewModel) {
                             )
                             OutlinedTextField(
                                 value = email,
-                                onValueChange = { viewModel.actualizarEmail(it) },
+                                onValueChange = { viewModel.actualizarEmail(it)
+                                    viewModel.checkErrorState()},
                                 singleLine = true,
                                 label = { Text("Email") },
                                 modifier = Modifier.fillMaxWidth(),
@@ -161,7 +164,8 @@ fun Registro(viewModel: RegistroViewModel) {
                             )
                             OutlinedTextField(
                                 value = nif ?: "",
-                                onValueChange = { viewModel.actualizarNif(it) },
+                                onValueChange = { viewModel.actualizarNif(it)
+                                    viewModel.checkErrorState()},
                                 singleLine = true,
                                 label = { Text("NIF") },
                                 modifier = Modifier.fillMaxWidth(),
@@ -185,7 +189,8 @@ fun Registro(viewModel: RegistroViewModel) {
                             )
                             OutlinedTextField(
                                 value = password ?: "",
-                                onValueChange = { viewModel.actualizarPassword(it) },
+                                onValueChange = { viewModel.actualizarPassword(it)
+                                    viewModel.checkErrorState()},
                                 singleLine = true,
                                 label = { Text("Password") },
                                 visualTransformation = PasswordVisualTransformation(),
@@ -210,7 +215,8 @@ fun Registro(viewModel: RegistroViewModel) {
                             )
                             OutlinedTextField(
                                 value = confirmPassword ?: "",
-                                onValueChange = { viewModel.actualizarConfirmPassword(it) },
+                                onValueChange = { viewModel.actualizarConfirmPassword(it)
+                                    viewModel.checkErrorState()},
                                 singleLine = true,
                                 label = { Text("Confirm Password") },
                                 visualTransformation = PasswordVisualTransformation(),

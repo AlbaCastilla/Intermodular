@@ -350,28 +350,77 @@ class RegistroViewModel : ViewModel() {
                 _confirmPassword.value.isNullOrBlank())
     }
 
-    fun validateForm() {
-        val emailValid = !(_email.value.isNullOrBlank()) && isValidEmail(_email.value ?: "")
-        val passwordValid = (_password.value?.length ?: 0) >= 6
-        val passwordsMatch = _password.value == _confirmPassword.value
-        val nifValid = !(_nif.value.isNullOrBlank()) && isValidNif(_nif.value ?: "")
+//    fun validateForm() {
+//        val emailValid = !(_email.value.isNullOrBlank()) && isValidEmail(_email.value ?: "")
+//        val passwordValid = (_password.value?.length ?: 0) >= 6
+//        val passwordsMatch = _password.value == _confirmPassword.value
+//        val nifValid = !(_nif.value.isNullOrBlank()) && isValidNif(_nif.value ?: "")
+//
+//        _companyNameError.value = if (_companyName.value.isNullOrBlank()) "El nombre de la empresa es obligatorio." else null
+//        _addressError.value = if (_address.value.isNullOrBlank()) "La dirección es obligatoria." else null
+//        _emailError.value = if (_email.value.isNullOrBlank() || !emailValid) "Por favor, ingrese un correo electrónico válido." else null
+//        _nifError.value = if (_nif.value.isNullOrBlank() || !nifValid) "El NIF ingresado no es válido." else null
+//        _passwordError.value = if (_password.value.isNullOrBlank() || !passwordValid) "La contraseña debe tener al menos 6 caracteres." else null
+//        _confirmPasswordError.value = if (_confirmPassword.value.isNullOrBlank() || !passwordsMatch) "Las contraseñas no coinciden." else null
+//
+//        _isFormValid.value = listOf(
+//            _companyNameError.value,
+//            _addressError.value,
+//            _emailError.value,
+//            _nifError.value,
+//            _passwordError.value,
+//            _confirmPasswordError.value
+//        ).all { it == null }
+//    }
 
-        _companyNameError.value = if (_companyName.value.isNullOrBlank()) "El nombre de la empresa es obligatorio." else null
-        _addressError.value = if (_address.value.isNullOrBlank()) "La dirección es obligatoria." else null
-        _emailError.value = if (_email.value.isNullOrBlank() || !emailValid) "Por favor, ingrese un correo electrónico válido." else null
-        _nifError.value = if (_nif.value.isNullOrBlank() || !nifValid) "El NIF ingresado no es válido." else null
-        _passwordError.value = if (_password.value.isNullOrBlank() || !passwordValid) "La contraseña debe tener al menos 6 caracteres." else null
-        _confirmPasswordError.value = if (_confirmPassword.value.isNullOrBlank() || !passwordsMatch) "Las contraseñas no coinciden." else null
-
-        _isFormValid.value = listOf(
-            _companyNameError.value,
-            _addressError.value,
-            _emailError.value,
-            _nifError.value,
-            _passwordError.value,
-            _confirmPasswordError.value
-        ).all { it == null }
+    fun checkErrorState() {
+        // Verificar si el campo tiene un error y si es válido, entonces quitar el error
+        if (_companyNameError.value != null && !(_companyName.value.isNullOrBlank())) {
+            _companyNameError.value = null // Limpiar el error si el campo es válido
+        }
+        if (_addressError.value != null && !(_address.value.isNullOrBlank())) {
+            _addressError.value = null // Limpiar el error si el campo es válido
+        }
+        if (_emailError.value != null && (_email.value?.let { isValidEmail(it) } == true)) {
+            _emailError.value = null // Limpiar el error si el campo es válido
+        }
+        if (_nifError.value != null && !(_nif.value.isNullOrBlank()) && isValidNif(_nif.value ?: "")) {
+            _nifError.value = null // Limpiar el error si el campo es válido
+        }
+        if (_passwordError.value != null && (_password.value?.length ?: 0) >= 6) {
+            _passwordError.value = null // Limpiar el error si el campo es válido
+        }
+        if (_confirmPasswordError.value != null && (_password.value == _confirmPassword.value)) {
+            _confirmPasswordError.value = null // Limpiar el error si las contraseñas coinciden
+        }
     }
+
+
+    fun validateForm() {
+    val emailValid = !(_email.value.isNullOrBlank()) && isValidEmail(_email.value ?: "")
+    val passwordValid = (_password.value?.length ?: 0) >= 6
+    val passwordsMatch = _password.value == _confirmPassword.value
+    val nifValid = !(_nif.value.isNullOrBlank()) && isValidNif(_nif.value ?: "")
+
+    // Limpiar errores si el campo es correcto
+    _companyNameError.value = if (_companyName.value.isNullOrBlank()) "El nombre de la empresa es obligatorio." else null
+    _addressError.value = if (_address.value.isNullOrBlank()) "La dirección es obligatoria." else null
+    _emailError.value = if (_email.value.isNullOrBlank() || !emailValid) "Por favor, ingrese un correo electrónico válido." else null
+    _nifError.value = if (_nif.value.isNullOrBlank() || !nifValid) "El NIF ingresado no es válido." else null
+    _passwordError.value = if (_password.value.isNullOrBlank() || !passwordValid) "La contraseña debe tener al menos 6 caracteres." else null
+    _confirmPasswordError.value = if (_confirmPassword.value.isNullOrBlank() || !passwordsMatch) "Las contraseñas no coinciden." else null
+
+    // Activar o desactivar el estado de validez
+    _isFormValid.value = listOf(
+        _companyNameError.value,
+        _addressError.value,
+        _emailError.value,
+        _nifError.value,
+        _passwordError.value,
+        _confirmPasswordError.value
+    ).all { it == null }
+}
+
 
     private fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
