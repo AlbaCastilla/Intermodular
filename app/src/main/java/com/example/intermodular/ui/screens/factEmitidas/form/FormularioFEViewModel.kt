@@ -1,14 +1,15 @@
 package com.example.intermodular.ui.screens.factEmitidas.form
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.lifecycle.viewModelScope
+import com.example.intermodular.data.ConexionBaseDatos
+import kotlinx.coroutines.launch
 
 class FormularioFEViewModel: ViewModel() {
 
-    //VARIABLES DEL VIEWMODEL
+    // Variables del ViewModel
     private val _companiaNombre = MutableLiveData<String>()
     val companiaNombre: LiveData<String> = _companiaNombre
 
@@ -18,21 +19,23 @@ class FormularioFEViewModel: ViewModel() {
     private val _direccion = MutableLiveData<String>()
     val direccion: LiveData<String> = _direccion
 
-    //para la actualizacion del estado --> q sera visible en el formulario
     private val _nifError = MutableLiveData<String?>()
     val nifError: LiveData<String?> = _nifError
 
-    //para actualizar el estado del nif --> si sigue siendo valido o no
+    private val _guardadoExitoso = MutableLiveData<Boolean>()
+    val guardadoExitoso: LiveData<Boolean> = _guardadoExitoso
+
+    // Función para actualizar el NIF
     fun actualizarNIF(nuevoNIF: String) {
         if (validarNIF(nuevoNIF)) {
             _nif.value = nuevoNIF
-            _nifError.value = null  // Borra el error si es válido
+            _nifError.value = null
         } else {
             _nifError.value = "NIF inválido"
         }
     }
 
-    //PARA LA VALIDACION DEL NIF
+    // Validación de NIF
     fun validarNIF(nif: String): Boolean {
         val regexDNI = Regex("^[0-9]{8}[A-Za-z]$")
         val regexNIE = Regex("^[XYZ][0-9]{7}[A-Za-z]$")
@@ -41,7 +44,6 @@ class FormularioFEViewModel: ViewModel() {
             return false
         }
 
-        // Convertir NIE a DNI para calcular la letra
         val nieReemplazado = when (nif.first()) {
             'X' -> nif.replaceFirst("X", "0")
             'Y' -> nif.replaceFirst("Y", "1")
@@ -56,34 +58,36 @@ class FormularioFEViewModel: ViewModel() {
         return letraCalculada == letraIngresada
     }
 
-    // CREAMOS UNA FUNCIÓN PARA GENERAR LA CONEXION A LA BASE DE DATOS Y GUARDAR LOS DATOS DE LA FACTURA EMITIDA
-    fun guardarFacturaEmitida(companiaNombre: String, nif: String, direccion: String) {
-        val db = FirebaseFirestore.getInstance()
-        val coleccion = "facturas"
-
-        // Tomamos los valores actuales de LiveData
+    // Función para guardar la factura emitida
+    fun guardarFacturaEmitida() {
         val companiaNombre = _companiaNombre.value ?: ""
         val nif = _nif.value ?: ""
         val direccion = _direccion.value ?: ""
 
-        db.collection(coleccion)
-            .add(
-                hashMapOf(
-                    "companiaNombre" to companiaNombre,
-                    "nif" to nif,
-                    "direccion" to direccion
-                )
-            )
-            .addOnSuccessListener {
-                // Limpiar los campos después del guardado
-                _companiaNombre.value = ""
-                _nif.value = ""
-                _direccion.value = ""
-                println("Se han guardado los datos bien")
+        viewModelScope.launch {
+            try {
+                ConexionBaseDatos.conexionBaseDatos.collection("facturas")
+                    .add(
+                        hashMapOf(
+                            "companiaNombre" to companiaNombre,
+                            "nif" to nif,
+                            "direccion" to direccion
+                        )
+                    ).addOnSuccessListener {
+                        _guardadoExitoso.value = true
+                        _companiaNombre.value = ""
+                        _nif.value = ""
+                        _direccion.value = ""
+                        println("Factura guardada exitosamente")
+                    }.addOnFailureListener {
+                        _guardadoExitoso.value = false
+                        println("Error al guardar la factura: ${it.message}")
+                    }
+            } catch (e: Exception) {
+                _guardadoExitoso.value = false
+                println("Error: ${e.message}")
             }
-            .addOnFailureListener { e ->
-                println("Error adding document: $e")
-            }
+        }
     }
 
     fun actualizarCompaniaNombre(nuevoNombre: String) {
@@ -97,6 +101,4 @@ class FormularioFEViewModel: ViewModel() {
     fun actualizarDireccion(nuevaDireccion: String) {
         _direccion.value = nuevaDireccion
     }
-
-
 }

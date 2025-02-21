@@ -7,10 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
+import com.example.intermodular.ui.screens.factEmitidas.form.FEmitidasInfoViewModel
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
 import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfo
-import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfoViewModel
 import com.example.intermodular.ui.screens.home.Home
 import com.example.intermodular.ui.screens.home.HomeViewModel
 import com.example.intermodular.ui.screens.login.Login
@@ -30,7 +30,7 @@ fun NavigationWrapper (navController: NavHostController) {
     val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
 
 
-    NavHost(navController = navController, startDestination = AppScreens.Login.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.FEmitidasInfo.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel
