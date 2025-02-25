@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.intermodular.models.Cliente
 import com.google.firebase.firestore.FirebaseFirestore
 
-class FormularioFEViewModel: ViewModel() {
+class FormularioFEViewModel2 : ViewModel() {
 
     //VARIABLES DEL VIEWMODEL
     private val _companiaNombre = MutableLiveData<String>()
