@@ -162,7 +162,7 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
 
             Button(
                 onClick = {
-                     viewModel.guardarFacturaEmitida(companiaNombre, nif, direccion)
+                     /*viewModel.guardarFacturaEmitida(companiaNombre, nif, direccion)*/
                      indicadorProgresoViewModel.avanzarPaso(3)
                     navController.navigate(AppScreens.FormularioFE2.ruta)
                 },
