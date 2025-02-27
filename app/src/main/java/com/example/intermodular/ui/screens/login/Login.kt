@@ -12,19 +12,26 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.intermodular.navigation.AppScreens
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login(viewModel: LoginViewModel) {
+fun Login(viewModel: LoginViewModel, navController: NavHostController) {
     val email: String by viewModel.email.observeAsState(initial = "")
     val password = viewModel.password.observeAsState(initial = "").value ?: ""
     val loginResult: Boolean? by viewModel.loginResult.observeAsState()
     val userId: String? by viewModel.userId.observeAsState()
+
+    val context = LocalContext.current
+    val user = FirebaseAuth.getInstance().currentUser
 
     Scaffold(
         topBar = {
@@ -92,7 +99,9 @@ fun Login(viewModel: LoginViewModel) {
                             Spacer(modifier = Modifier.height(20.dp))
 
                             Button(
-                                onClick = { viewModel.iniciarSesion() },
+                                onClick = { viewModel.iniciarSesion()
+                                    navController.navigate(AppScreens.FormularioFE.ruta)
+                                    viewModel.guardarDatosUsuario(context, user)},
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(8.dp)
                             ) {

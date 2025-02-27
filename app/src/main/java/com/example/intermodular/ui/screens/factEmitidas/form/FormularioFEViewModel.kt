@@ -1,11 +1,13 @@
 package com.example.intermodular.ui.screens.factEmitidas.form
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.intermodular.models.Cliente
 import com.example.intermodular.models.Factura
 import com.google.firebase.firestore.FirebaseFirestore
+
 
 ///*
 //class FormularioFEViewModel: ViewModel() {
@@ -280,6 +282,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class FormularioFEViewModel : ViewModel() {
 
+
     private val _companiaNombre = MutableLiveData<String>()
     val companiaNombre: LiveData<String> = _companiaNombre
 
@@ -305,6 +308,40 @@ class FormularioFEViewModel : ViewModel() {
         } else {
             _nifError.value = "NIF inválido"
         }
+    }
+
+    private val _companiaNombreUsuario = MutableLiveData<String>()
+    val companiaNombreUsuario: LiveData<String> = _companiaNombreUsuario
+
+    private val _nifUsuario = MutableLiveData<String>()
+    val nifUsuario: LiveData<String> = _nifUsuario
+
+    private val _direccionUsuario = MutableLiveData<String>()
+    val direccionUsuario: LiveData<String> = _direccionUsuario
+
+    private val _emailUsuario = MutableLiveData<String>()
+    val emailUsuario: LiveData<String> = _emailUsuario
+
+    private val _phoneNumberUsuario = MutableLiveData<String>()
+    val phoneNumberUsuario: LiveData<String> = _phoneNumberUsuario
+
+    private val _displayNameUsuario = MutableLiveData<String>()
+    val displayNameUsuario: LiveData<String> = _displayNameUsuario
+
+    private var usuarioId: String? = null
+
+    fun cargarDatosUsuario(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
+
+        // Recuperar los datos guardados en SharedPreferences
+        _companiaNombreUsuario.value = sharedPreferences.getString("company_name", "")
+        _nifUsuario.value = sharedPreferences.getString("nif", "")
+        _direccionUsuario.value = sharedPreferences.getString("address", "")
+        _emailUsuario.value = sharedPreferences.getString("email", "")
+        _phoneNumberUsuario.value = sharedPreferences.getString("phone_number", "")
+        usuarioId = sharedPreferences.getString("user_id", "")
+        _displayNameUsuario.value = sharedPreferences.getString("display_name", "")
+
     }
 
     fun validarNIF(nif: String): Boolean {

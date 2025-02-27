@@ -36,7 +36,7 @@ fun NavigationWrapper (navController: NavHostController) {
     val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
 
 
-    NavHost(navController = navController, startDestination = AppScreens.FormularioFE.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.Login.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel
@@ -45,8 +45,8 @@ fun NavigationWrapper (navController: NavHostController) {
         }
         composable(AppScreens.Login.ruta){
             Login(
-                viewModel = loginViewModel
-                //luego añadiremos el navController q sino da error :)
+                viewModel = loginViewModel,
+                navController = navController
             )
         }
         composable(AppScreens.Registro.ruta){
