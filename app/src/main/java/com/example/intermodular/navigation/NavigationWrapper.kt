@@ -1,5 +1,6 @@
 package com.example.intermodular.navigation
 
+import FormularioConProgreso
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -9,7 +10,10 @@ import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
 import com.example.intermodular.ui.screens.factEmitidas.form.FEmitidasInfoViewModel
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
+
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
+//import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel2
+import com.example.intermodular.ui.screens.factEmitidas.form.FuncionesFormularioFE3
 import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfo
 import com.example.intermodular.ui.screens.home.Home
 import com.example.intermodular.ui.screens.home.HomeViewModel
@@ -17,6 +21,7 @@ import com.example.intermodular.ui.screens.login.Login
 import com.example.intermodular.ui.screens.login.LoginViewModel
 import com.example.intermodular.ui.screens.registro.Registro
 import com.example.intermodular.ui.screens.registro.RegistroViewModel
+
 
 @Composable
 fun NavigationWrapper (navController: NavHostController) {
@@ -27,10 +32,11 @@ fun NavigationWrapper (navController: NavHostController) {
     val registroViewModel: RegistroViewModel = viewModel()
     val femitidasInfoViewModel: FEmitidasInfoViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
+    //val form: FormularioFEViewModel2 = viewModel()
     val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
 
 
-    NavHost(navController = navController, startDestination = AppScreens.FEmitidasInfo.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.Login.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel
@@ -62,7 +68,22 @@ fun NavigationWrapper (navController: NavHostController) {
         composable(AppScreens.FormularioFE.ruta){
             FormularioFE(
                 viewModel = formularioFEViewModel,
-                indicadorProgresoViewModel = indicadorProgresoViewModel
+                indicadorProgresoViewModel = indicadorProgresoViewModel ,
+                navController = navController
+            )
+        }
+        composable(AppScreens.FormularioFE3.ruta){
+            FuncionesFormularioFE3(
+                viewModel = formularioFEViewModel,
+                indicadorProgresoViewModel = indicadorProgresoViewModel ,
+                navController = navController
+            )
+        }
+        composable(AppScreens.FormularioFE2.ruta){
+            FormularioConProgreso(
+                viewModel = formularioFEViewModel,
+                indicadorProgresoViewModel = indicadorProgresoViewModel,
+                navController = navController
             )
         }
 

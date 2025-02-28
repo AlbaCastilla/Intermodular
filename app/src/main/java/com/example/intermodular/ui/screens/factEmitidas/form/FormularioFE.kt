@@ -28,13 +28,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextAlign.Companion.Justify
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
+import com.example.intermodular.navigation.AppScreens
+
 
 /**
  * FORMULARIO DE AÑADIR FACTURA
@@ -42,7 +43,7 @@ import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoV
 
 
 @Composable
-fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: IndicadorProgresoViewModel) {
+fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: IndicadorProgresoViewModel, navController: NavHostController) {
 
     //declaracion de las variables de nuestro viewModel
     val companiaNombre: String by viewModel.companiaNombre.observeAsState(initial = "")
@@ -73,7 +74,8 @@ fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: I
                 companiaNombre = companiaNombre,
                 nif = nif,
                 direccion = direccion,
-                indicadorProgresoViewModel = indicadorProgresoViewModel
+                indicadorProgresoViewModel = indicadorProgresoViewModel,
+                navController = navController
             )
         }
     }
@@ -81,7 +83,7 @@ fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: I
 }
 
 @Composable
-fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorProgresoViewModel: IndicadorProgresoViewModel, viewModel: FormularioFEViewModel){
+fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorProgresoViewModel: IndicadorProgresoViewModel, viewModel: FormularioFEViewModel, navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -160,8 +162,9 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
 
             Button(
                 onClick = {
-                    // viewModel.guardarFacturaEmitida(companiaNombre, nif, direccion)
+                     /*viewModel.guardarFacturaEmitida(companiaNombre, nif, direccion)*/
                      indicadorProgresoViewModel.avanzarPaso(3)
+                    navController.navigate(AppScreens.FormularioFE2.ruta)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
@@ -188,7 +191,8 @@ fun FuncionesFormularioFE(
     companiaNombre: String,
     nif: String,
     direccion: String,
-    indicadorProgresoViewModel: IndicadorProgresoViewModel
+    indicadorProgresoViewModel: IndicadorProgresoViewModel,
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier
@@ -207,7 +211,8 @@ fun FuncionesFormularioFE(
             nif = nif,
             direccion = direccion,
             viewModel = viewModel, // Pasamos el ViewModel
-            indicadorProgresoViewModel = indicadorProgresoViewModel
+            indicadorProgresoViewModel = indicadorProgresoViewModel,
+            navController = navController
         )
     }
 }
