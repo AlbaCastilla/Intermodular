@@ -13,6 +13,10 @@ import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
 //import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel2
 import com.example.intermodular.ui.screens.factEmitidas.form.FuncionesFormularioFE3
+import com.example.intermodular.ui.screens.factRecibidas.form.FormularioConProgreso2
+import com.example.intermodular.ui.screens.factRecibidas.form.FormularioFR
+import com.example.intermodular.ui.screens.factRecibidas.form.FormularioFRViewModel
+import com.example.intermodular.ui.screens.factRecibidas.form.FuncionesFormularioFR3
 
 import com.example.intermodular.ui.screens.home.Home
 import com.example.intermodular.ui.screens.home.HomeViewModel
@@ -31,13 +35,15 @@ fun NavigationWrapper (navController: NavHostController) {
     val registroViewModel: RegistroViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
     val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
+    val formularioFRViewModel: FormularioFRViewModel = viewModel()
+
 
 
     NavHost(navController = navController, startDestination = AppScreens.Home.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
-                viewModel = homeViewModel
-                //luego añadiremos el navController q sino da error :)
+                viewModel = homeViewModel,
+                navController = navController // ← Pasa el NavController correcto
             )
         }
         composable(AppScreens.Login.ruta){
@@ -80,6 +86,30 @@ fun NavigationWrapper (navController: NavHostController) {
         composable(AppScreens.IndicadorProgreso.ruta){
             IndicadorProgreso(
                 viewModel = indicadorProgresoViewModel
+            )
+        }
+
+        composable(AppScreens.FormularioFR.ruta){
+            FormularioFR(
+                viewModel = formularioFRViewModel,
+                indicadorProgresoViewModel = indicadorProgresoViewModel,
+                navController = navController
+            )
+        }
+
+        composable(AppScreens.FormularioFR2.ruta){
+            FormularioConProgreso2(
+                viewModel = formularioFRViewModel,
+                indicadorProgresoViewModel = indicadorProgresoViewModel,
+                navController = navController
+            )
+        }
+
+        composable(AppScreens.FormularioFR3.ruta){
+            FuncionesFormularioFR3(
+                viewModel = formularioFRViewModel,
+                indicadorProgresoViewModel = indicadorProgresoViewModel,
+                navController = navController
             )
         }
 
