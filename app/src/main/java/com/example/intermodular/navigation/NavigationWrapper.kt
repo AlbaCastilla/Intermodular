@@ -13,8 +13,7 @@ import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
 //import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel2
 import com.example.intermodular.ui.screens.factEmitidas.form.FuncionesFormularioFE3
-import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfo
-import com.example.intermodular.ui.screens.factEmitidas.info.FEmitidasInfoViewModel
+
 import com.example.intermodular.ui.screens.home.Home
 import com.example.intermodular.ui.screens.home.HomeViewModel
 import com.example.intermodular.ui.screens.login.Login
@@ -30,12 +29,11 @@ fun NavigationWrapper (navController: NavHostController) {
     val homeViewModel: HomeViewModel = viewModel()
     val loginViewModel: LoginViewModel = viewModel()
     val registroViewModel: RegistroViewModel = viewModel()
-    val femitidasInfoViewModel: FEmitidasInfoViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
     val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
 
 
-    NavHost(navController = navController, startDestination = AppScreens.Login.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.Home.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel
@@ -55,13 +53,6 @@ fun NavigationWrapper (navController: NavHostController) {
             )
         }
 
-        //FACTURAS EMITIDAS - info
-        composable(AppScreens.FEmitidasInfo.ruta){
-            FEmitidasInfo(
-                viewModel = femitidasInfoViewModel,
-                indicadorProgresoViewModel = indicadorProgresoViewModel
-            )
-        }
 
         //FACTURAS EMITIDAS - formulario
         composable(AppScreens.FormularioFE.ruta){
