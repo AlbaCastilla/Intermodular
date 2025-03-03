@@ -12,14 +12,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.intermodular.navigation.AppScreens
+import com.example.intermodular.viewmodels.NavigationViewModel
 
 @Composable
-fun BottomNavigationBarComponent(navController: NavController) {
+fun BottomNavigationBarComponent(
+    navController: NavController,
+    viewModel: NavigationViewModel = viewModel()
+) {
     val selectedRoute by navController.currentBackStackEntryAsState()
 
     NavigationBar(containerColor = Color(0xFFE6E6FA)) {
-        AppScreens.Home.navItems.forEach { item ->  // Acceder directamente a los items
+        viewModel.navItems.forEach { item ->
             val isSelected = item.route == selectedRoute?.destination?.route
 
             NavigationBarItem(
@@ -51,6 +54,5 @@ fun BottomNavigationBarComponent(navController: NavController) {
         }
     }
 }
-
 
 
