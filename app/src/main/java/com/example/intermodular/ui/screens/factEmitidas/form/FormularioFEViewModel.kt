@@ -336,15 +336,16 @@ class FormularioFEViewModel : ViewModel() {
     fun cargarDatosUsuario(context: Context) {
         val sharedPreferences = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
 
-        // Recuperar los datos guardados en SharedPreferences
-        _companiaNombreUsuario.value = sharedPreferences.getString("company_name", "")
+        _companiaNombreUsuario.value = sharedPreferences.getString("companiaNombre", "")
         _nifUsuario.value = sharedPreferences.getString("nif", "")
-        _direccionUsuario.value = sharedPreferences.getString("address", "")
+        _direccionUsuario.value = sharedPreferences.getString("direccion", "")
         _emailUsuario.value = sharedPreferences.getString("email", "")
-        _phoneNumberUsuario.value = sharedPreferences.getString("phone_number", "")
-        usuarioId = sharedPreferences.getString("user_id", "")
-        _displayNameUsuario.value = sharedPreferences.getString("display_name", "")
 
+
+        Log.d("SharedPreferences", "Compañía: ${sharedPreferences.getString("companiaNombre", "")}")
+        Log.d("SharedPreferences", "NIF: ${sharedPreferences.getString("nif", "")}")
+        Log.d("SharedPreferences", "Dirección: ${sharedPreferences.getString("direccion", "")}")
+        Log.d("SharedPreferences", "Email: ${sharedPreferences.getString("email", "")}")
     }
 
     fun validarNIF(nif: String): Boolean {
@@ -372,6 +373,7 @@ class FormularioFEViewModel : ViewModel() {
     fun guardarFacturaEnFirestore() {
         val db = FirebaseFirestore.getInstance()
         val coleccion = db.collection("facturas")
+        val clienteId = _clienteId.value ?: ""
 
         // Obtener el último número de factura
         coleccion.orderBy("numeroFactura", Query.Direction.DESCENDING).limit(1).get()
@@ -395,8 +397,6 @@ class FormularioFEViewModel : ViewModel() {
                     "nifUsuario" to nifUsuario.value,
                     "direccionUsuario" to direccionUsuario.value,
                     "emailUsuario" to emailUsuario.value,
-                    "phoneNumberUsuario" to phoneNumberUsuario.value,
-                    "displayNameUsuario" to displayNameUsuario.value,
                     "timestamp" to FieldValue.serverTimestamp()
                 )
 
@@ -420,6 +420,7 @@ class FormularioFEViewModel : ViewModel() {
         val nombre = _companiaNombre.value ?: ""
         val nif = _nif.value ?: ""
         val direccion = _direccion.value ?: ""
+
 
         val nuevoDocumento = db.collection(coleccion).document()
 
@@ -463,7 +464,7 @@ class FormularioFEViewModel : ViewModel() {
     private val _valor = MutableLiveData<String>()
     val valor: LiveData<String> = _valor
 
-    private val _iva = MutableLiveData<Int>()
+    private val _iva = MutableLiveData<Int>().apply { value = 21 }
     val iva: LiveData<Int> = _iva
 
     private val _total = MutableLiveData<Double>()
