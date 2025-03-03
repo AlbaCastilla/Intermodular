@@ -1,101 +1,52 @@
-package com.example.intermodular.ui.screens.factEmitidas.form
+package com.example.intermodular.ui.screens.factEmitidas.info
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.intermodular.data.ConexionBaseDatos
-import kotlinx.coroutines.launch
 
-class FEmitidasInfoViewModel : ViewModel() {
+class FEmitidasInfoViewModel: ViewModel() {
 
-    // Variables del ViewModel
-    private val _moneyCharge = MutableLiveData<String>("")
+    private val _moneyCharge = MutableLiveData<String>("") //le vamos aa poner comillas para q no me de error con el input
     val moneyCharge: LiveData<String> = _moneyCharge
 
-    private val _totalAccount = MutableLiveData<String>("0.00")
+    private val _totalAccount = MutableLiveData<String>("0.00") //indicamos qe siempre va a comenzar en 0.00
     val totalAccount: LiveData<String> = _totalAccount
 
-    private val _taxType = MutableLiveData<Double>(0.21)
+    private val _taxType = MutableLiveData<Double>(0.21) //q empiece por defecto con la opcion del 21%
     val taxType: LiveData<Double> = _taxType
 
-    private val _guardadoExitoso = MutableLiveData<Boolean>()
-    val guardadoExitoso: LiveData<Boolean> = _guardadoExitoso
+    //para las opciones del select para los impuestos
+    private val taxOptions = mapOf(
+        "IVA" to 0.21,  //21%
+        "ISR" to 0.10,  //10%
+        "IEPS" to 0.04  //4%
+    )
 
-    // Función para actualizar el valor de moneyCharge
-    fun actualizarMoneyCharge(nuevoValor: String) {
-        _moneyCharge.value = nuevoValor
-        calcularTotal()
+
+    fun updateMoneyCharge(value: String) {
+        _moneyCharge.value = value
+        calculateTotal()
     }
 
-    // Función para actualizar el tipo de impuesto
-    fun actualizarTaxType(nuevoTipo: String) {
-        val taxOptions = mapOf(
-            "IVA" to 0.21,  //21%
-            "ISR" to 0.10,  //10%
-            "IEPS" to 0.04  //4%
-        )
-        val nuevoImpuesto = taxOptions[nuevoTipo] ?: 0.21
-        _taxType.value = nuevoImpuesto
-        calcularTotal()
+    fun updateTaxType(taxName: String) {
+        val newTax = taxOptions[taxName] ?: 0.21
+        _taxType.value = newTax
+        calculateTotal()
     }
 
-    // Función para calcular el total con el impuesto seleccionado
-    private fun calcularTotal() {
+    private fun calculateTotal() {
+        //obtenemos la cantidad del moneyCharge --> como Double
         val chargeString = _moneyCharge.value ?: "0.00"
         val charge = chargeString.toDoubleOrNull() ?: 0.0
+
+        //pillamos el valor del impuesto q hemos seleccionado
         val tax = _taxType.value ?: 0.21
 
+        // Calcular el total con impuestos
         val total = charge * (1 + tax)
+
+        // Convertir el resultado a String con 2 decimales y actualizar LiveData
         val totalFormatted = String.format("%.2f", total)
         _totalAccount.value = totalFormatted
     }
-
-    // Función para guardar la factura emitida
-    fun guardarFacturaEmitida() {
-        val moneyCharge = _moneyCharge.value ?: ""
-        val totalAccount = _totalAccount.value ?: ""
-        val taxType = _taxType.value ?: 0.21
-
-        viewModelScope.launch {
-            try {
-                ConexionBaseDatos.conexionBaseDatos.collection("facturas")
-                    .add(
-                        hashMapOf(
-                            "moneyCharge" to moneyCharge,
-                            "totalAccount" to totalAccount,
-                            "taxType" to taxType
-                        )
-                    ).addOnSuccessListener {
-                        _guardadoExitoso.value = true
-                        _moneyCharge.value = ""
-                        _totalAccount.value = "0.00"
-                        _taxType.value = 0.21
-                        println("Factura guardada exitosamente")
-                    }.addOnFailureListener {
-                        _guardadoExitoso.value = false
-                        println("Error al guardar la factura: ${it.message}")
-                    }
-            } catch (e: Exception) {
-                _guardadoExitoso.value = false
-                println("Error: ${e.message}")
-            }
-        }
-    }
-
-    fun actualizarMoneyCharge2(nuevoMoneyCharge: String) {
-        _moneyCharge.value = moneyCharge.toString()
-    }
-
-    fun actualizarTotalAccount(nuevoTotalAccount: String) {
-        _totalAccount.value = totalAccount.toString()
-    }
-
-    fun actualizarTaxType2(nuevoTaxType: String) {
-       // _taxType.value = taxType // me da error y no se pq
-    }
-
-
-
-
 }

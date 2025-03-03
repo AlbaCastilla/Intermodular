@@ -298,7 +298,12 @@ class FormularioFEViewModel : ViewModel() {
     private val _nifError = MutableLiveData<String?>()
     val nifError: LiveData<String?> = _nifError
 
-    //para actualizar el estado del nif --> si sigue siendo valido o no
+    private val _clienteId = MutableLiveData<String?>()
+    val clienteId: LiveData<String?> = _clienteId
+
+    // ** Variable local para almacenar el clienteId **
+    private var clienteIdLocal: String? = null
+
     fun actualizarNIF(nuevoNIF: String) {
         if (validarNIF(nuevoNIF)) {
             _nif.value = nuevoNIF
@@ -410,30 +415,36 @@ class FormularioFEViewModel : ViewModel() {
 
     fun guardarFacturaEmitida(nombre: String, nif: String, direccion: String) {
         val db = FirebaseFirestore.getInstance()
-        val coleccion = "facturas"
+        val coleccion = "clientes"
 
-        // Tomamos los valores actuales de LiveData
-        val companiaNombre = _companiaNombre.value ?: ""
+        val nombre = _companiaNombre.value ?: ""
         val nif = _nif.value ?: ""
         val direccion = _direccion.value ?: ""
 
-        db.collection(coleccion)
-            .add(
-                hashMapOf(
-                    "companiaNombre" to companiaNombre,
-                    "nif" to nif,
-                    "direccion" to direccion
-                )
-            )
+        val nuevoDocumento = db.collection(coleccion).document()
+
+        val cliente = Cliente(
+            id = nuevoDocumento.id,
+            nombre = nombre,
+            nif = nif,
+            direccion = direccion
+        )
+
+        nuevoDocumento.set(cliente)
             .addOnSuccessListener {
-                // Limpiar los campos después del guardado
+                // Guardar el ID en la variable LiveData y en la variable local
+                _clienteId.value = cliente.id
+                clienteIdLocal = cliente.id  // Almacenar localmente
+
+                // Limpiar los campos
                 _companiaNombre.value = ""
                 _nif.value = ""
                 _direccion.value = ""
-                println("Se han guardado los datos bien")
+
+                println("Se han guardado los datos correctamente. ID: ${cliente.id}")
             }
             .addOnFailureListener { e ->
-                println("Error adding document: $e")
+                println("Error al agregar documento: $e")
             }
     }
 
@@ -448,7 +459,45 @@ class FormularioFEViewModel : ViewModel() {
     fun actualizarDireccion(nuevaDireccion: String) {
         _direccion.value = nuevaDireccion
     }
-}
+
+    private val _valor = MutableLiveData<String>()
+    val valor: LiveData<String> = _valor
+
+    private val _iva = MutableLiveData<Int>()
+    val iva: LiveData<Int> = _iva
+
+    private val _total = MutableLiveData<Double>()
+    val total: LiveData<Double> = _total
+
+    fun actualizarValor(nuevoValor: String) {
+        _valor.value = nuevoValor
+        calcularTotal()
+    }
+
+    fun actualizarIVA(nuevoIVA: Int) {
+        _iva.value = nuevoIVA
+        calcularTotal()
+    }
+
+    // ** Function to calculate the total based on value and IVA **
+    private fun calcularTotal() {
+        val valorDouble = _valor.value?.toDoubleOrNull() ?: 0.0
+        val ivaValue = _iva.value ?: 21
+        val totalValue = valorDouble * (1 + ivaValue / 100.0)
+        _total.value = totalValue
+    }
 
 
 }
+/*
+fun obtenerTodosLosDatos(): Factura {
+        return Factura(
+            companiaNombre = _companiaNombre.value?: "",
+            nif = _nif.value?: "",
+            direccion = _direccion.value?: "",
+            valor = _valor.value ?: 0.0,
+            iva = _iva.value?: 21,
+            total = _total.value ?: 0.0 // En caso de que el total no esté calculado aún
+        )
+    }
+ */
