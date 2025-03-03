@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -33,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
+import com.example.intermodular.ui.screens.factEmitidas.form.FEmitidasInfoViewModel
+import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
 
 
 /**
@@ -70,7 +73,7 @@ fun FEmitidasInfo(viewModel: FEmitidasInfoViewModel, indicadorProgresoViewModel:
 
 
 @Composable
-fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indicadorProgresoViewModel: IndicadorProgresoViewModel){
+fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indicadorProgresoViewModel: IndicadorProgresoViewModel,  viewModel: FEmitidasInfoViewModel){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -107,7 +110,7 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
             )
             OutlinedTextField(
                 value = moneyCharge,
-                onValueChange = { /* = it*/ },
+                onValueChange = { viewModel.actualizarMoneyCharge2(it) },
                 singleLine = true,
                 label = { Text("000000") },
                 shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
@@ -123,7 +126,7 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
             )
             OutlinedTextField(
                 value = totalAccount,
-                onValueChange = { /*nif = it*/ },
+                onValueChange = { viewModel.actualizarTotalAccount(it) },
                 singleLine = true,
                 label = { Text("00000000P") },
                 shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
@@ -134,7 +137,7 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
 
             OutlinedTextField(
                 value = totalAccount,
-                onValueChange = { /*viewModel.updateTotalAccount(it)*/ },
+                onValueChange = { /*viewModel.updateTotalAccount(it)*/ }, // NO SE QUE FUNCION ES ESTA
                 singleLine = true,
                 label = { Text("Total amount") },
                 shape = RoundedCornerShape(16.dp),
@@ -200,6 +203,13 @@ fun FuncionesFEmitidasInfo(
             IndicadorProgreso(
                 viewModel = indicadorProgresoViewModel,
                 pasosTotales = 3
+            )
+            CardForm2(
+                moneyCharge = moneyCharge,
+                totalAccount = totalAccount,
+                taxType = "IVA",
+                indicadorProgresoViewModel = indicadorProgresoViewModel,
+                viewModel = viewModel
             )
     }
 }
