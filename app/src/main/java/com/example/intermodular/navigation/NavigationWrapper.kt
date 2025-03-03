@@ -32,7 +32,6 @@ fun NavigationWrapper (navController: NavHostController) {
     val registroViewModel: RegistroViewModel = viewModel()
     val femitidasInfoViewModel: FEmitidasInfoViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
-    //val form: FormularioFEViewModel2 = viewModel()
     val indicadorProgresoViewModel: IndicadorProgresoViewModel = viewModel()
 
 
