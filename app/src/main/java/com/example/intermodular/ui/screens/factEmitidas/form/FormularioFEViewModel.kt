@@ -1,12 +1,15 @@
 package com.example.intermodular.ui.screens.factEmitidas.form
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.intermodular.models.Cliente
 import com.example.intermodular.models.Factura
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 
 ///*
@@ -364,6 +367,50 @@ class FormularioFEViewModel : ViewModel() {
         val letraIngresada = nif.last().uppercaseChar()
 
         return letraCalculada == letraIngresada
+    }
+
+    fun guardarFacturaEnFirestore() {
+        val db = FirebaseFirestore.getInstance()
+        val coleccion = db.collection("facturas")
+
+        // Obtener el último número de factura
+        coleccion.orderBy("numeroFactura", Query.Direction.DESCENDING).limit(1).get()
+            .addOnSuccessListener { documents ->
+                var nuevoNumero = 1
+                if (!documents.isEmpty) {
+                    val ultimoNumero = documents.documents[0].getLong("numeroFactura") ?: 0
+                    nuevoNumero = ultimoNumero.toInt() + 1
+                }
+                val numeroFacturaStr = nuevoNumero.toString().padStart(7, '0')
+
+                val factura = hashMapOf(
+                    "numeroFactura" to nuevoNumero,
+                    "companiaNombre" to companiaNombre.value,
+                    "nif" to nif.value,
+                    "direccion" to direccion.value,
+                    "valor" to valor.value,
+                    "iva" to iva.value,
+                    "total" to total.value,
+                    "companiaNombreUsuario" to companiaNombreUsuario.value,
+                    "nifUsuario" to nifUsuario.value,
+                    "direccionUsuario" to direccionUsuario.value,
+                    "emailUsuario" to emailUsuario.value,
+                    "phoneNumberUsuario" to phoneNumberUsuario.value,
+                    "displayNameUsuario" to displayNameUsuario.value,
+                    "timestamp" to FieldValue.serverTimestamp()
+                )
+
+                coleccion.add(factura)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("Firestore", "Factura guardada con ID: ${documentReference.id}")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("Firestore", "Error al guardar la factura", e)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error al obtener el último número de factura", e)
+            }
     }
 
     fun guardarFacturaEmitida(nombre: String, nif: String, direccion: String) {
