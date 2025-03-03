@@ -2,6 +2,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
@@ -248,7 +249,11 @@ fun CardForm(valor: String, iva: Int, total: Double, viewModel: FormularioFEView
                     navController.navigate(AppScreens.FormularioFE3.ruta)
                 },
                 modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF577A8E) // Button color
+                ),
                 shape = RoundedCornerShape(8.dp)
+
             ) {
                 Text(
                     text = "Next",
@@ -257,6 +262,30 @@ fun CardForm(valor: String, iva: Int, total: Double, viewModel: FormularioFEView
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(
                     Icons.Default.ArrowForward,
+                    contentDescription = "Siguiente",
+                    tint = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.height(2.dp)) // Adding space before the button
+            Button(
+                onClick = { navController.navigate("FormularioFE") /*viewModel.guardarFacturaEnFirestore() */} ,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally), // Centering the button horizontally
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF577A8E) // Button color
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(
+                    text = "Atras",
+                    fontSize = 16.sp,
+                    color = Color.White, // Button text color
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    Icons.Default.ArrowBack,
                     contentDescription = "Siguiente",
                     tint = Color.White
                 )
