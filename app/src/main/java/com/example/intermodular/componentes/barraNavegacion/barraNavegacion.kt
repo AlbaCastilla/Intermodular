@@ -42,7 +42,7 @@ fun BottomNavigationBarComponent(
                 },
                 selected = isSelected,
                 onClick = {
-                    if (!isSelected) {
+                    if (!isSelected && navController.currentDestination != null) { // Evita el error
                         navController.navigate(item.route) {
                             popUpTo(navController.graph.startDestinationId) { saveState = true }
                             launchSingleTop = true

@@ -36,8 +36,8 @@ fun NavigationWrapper (navController: NavHostController) {
     NavHost(navController = navController, startDestination = AppScreens.Home.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
-                viewModel = homeViewModel
-                //luego añadiremos el navController q sino da error :)
+                viewModel = homeViewModel,
+                navController = navController // ← Pasa el NavController correcto
             )
         }
         composable(AppScreens.Login.ruta){
