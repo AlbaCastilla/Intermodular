@@ -5,18 +5,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
+
 
 @Composable
 fun FuncionesFormularioFE3(
@@ -32,6 +36,20 @@ fun FuncionesFormularioFE3(
     val iva by viewModel.iva.observeAsState(21)
     val total by viewModel.total.observeAsState(0.0)
 
+
+    val companiaNombreUsuario by viewModel.companiaNombreUsuario.observeAsState("")
+    val nifUsuario by viewModel.nifUsuario.observeAsState("")
+    val direccionUsuario by viewModel.direccionUsuario.observeAsState("")
+    val emailUsuario by viewModel.emailUsuario.observeAsState("")
+    val phoneNumberUsuario by viewModel.phoneNumberUsuario.observeAsState("")
+    val displayNameUsuario by viewModel.displayNameUsuario.observeAsState("")
+
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.cargarDatosUsuario(context)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,6 +69,12 @@ fun FuncionesFormularioFE3(
             valor = valor,
             iva =iva,
             total =total,
+            companiaNombreUsuario = companiaNombreUsuario,
+            nifUsuario = nifUsuario,
+            direccionUsuario = direccionUsuario,
+            emailUsuario = emailUsuario,
+            phoneNumberUsuario = phoneNumberUsuario,
+            displayNameUsuario = displayNameUsuario,
             viewModel = viewModel,
             navController = navController
         )
@@ -65,6 +89,12 @@ fun CardForm2(
     valor: Comparable<*>,
     iva:Int,
     total:Double,
+    companiaNombreUsuario: String,
+    nifUsuario: String,
+    direccionUsuario: String,
+    emailUsuario: String,
+    phoneNumberUsuario: String,
+    displayNameUsuario: String,
     viewModel: FormularioFEViewModel,
     navController: NavHostController
 ) {
@@ -89,9 +119,16 @@ fun CardForm2(
                 Text(text = "Valor: $valor")
                 Text(text = "IVA: $iva")
                 Text(text = "Total: $total")
+                Text(text = "Compañía Usuario: $companiaNombreUsuario")
+                Text(text = "NIF Usuario: $nifUsuario")
+                Text(text = "Dirección Usuario: $direccionUsuario")
+                Text(text = "Email Usuario: $emailUsuario")
+                Text(text = "Teléfono Usuario: $phoneNumberUsuario")
+                Text(text = "Nombre Usuario: $displayNameUsuario")
 
-
-                // More fields can be added as needed
+                Button(onClick = { viewModel.guardarFacturaEnFirestore() }) {
+                    Text("Guardar")
+                }
             }
         }
     }
