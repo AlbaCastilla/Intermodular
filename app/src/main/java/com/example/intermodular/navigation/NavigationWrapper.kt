@@ -1,5 +1,6 @@
 package com.example.intermodular.navigation
 
+import FEHomeViewModel
 import FormularioConProgreso
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,6 +14,7 @@ import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
 //import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel2
 import com.example.intermodular.ui.screens.factEmitidas.form.FuncionesFormularioFE3
+import com.example.intermodular.ui.screens.factEmitidas.screen.FEHome
 import com.example.intermodular.ui.screens.factRecibidas.form.FormularioConProgreso2
 import com.example.intermodular.ui.screens.factRecibidas.form.FormularioFR
 import com.example.intermodular.ui.screens.factRecibidas.form.FormularioFRViewModel
@@ -109,6 +111,13 @@ fun NavigationWrapper (navController: NavHostController) {
             FuncionesFormularioFR3(
                 viewModel = formularioFRViewModel,
                 indicadorProgresoViewModel = indicadorProgresoViewModel,
+                navController = navController
+            )
+        }
+
+        composable(AppScreens.FEHome.ruta) {
+            FEHome(
+                viewModel = viewModel(),
                 navController = navController
             )
         }

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
+import com.example.intermodular.navigation.AppScreens
 
 
 @Composable
@@ -166,7 +167,10 @@ fun CardForm2(
                 // Save button
                 Spacer(modifier = Modifier.height(16.dp)) // Adding space before the button
                 Button(
-                    onClick = { viewModel.guardarFacturaEnFirestore() },
+                    onClick = {
+                        viewModel.guardarFacturaEnFirestore()
+                        navController.navigate(AppScreens.FEHome.ruta)
+                    },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally) // Centering the button horizontally
                         .fillMaxWidth(0.6f) // Adjusting the button width to 60% of screen
