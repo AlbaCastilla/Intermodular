@@ -11,6 +11,6 @@ class NavigationViewModel : ViewModel() {
     val navItems = listOf(
         NavItem("FEHome", Icons.Default.Send, "Sent"),
         NavItem("home", Icons.Default.Home, "Home"),
-        NavItem("FormularioFR", Icons.Default.Star, "Received")
+        NavItem("FRHome", Icons.Default.Star, "Received")
     )
 }
