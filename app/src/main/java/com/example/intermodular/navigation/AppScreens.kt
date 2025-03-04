@@ -10,6 +10,8 @@ sealed class AppScreens(val ruta: String){
     object FormularioFR: AppScreens("FormularioFR")
     object FormularioFR2: AppScreens("FormularioFR2")
     object FormularioFR3: AppScreens("FormularioFR3")
+    object FEHome: AppScreens("FEHome")
+    object FRHome: AppScreens("FRHome")
 
 
     object IndicadorProgreso: AppScreens("IndicadorProgreso")

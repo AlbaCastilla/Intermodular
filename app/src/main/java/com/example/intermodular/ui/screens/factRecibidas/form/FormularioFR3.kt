@@ -125,7 +125,7 @@ fun CardForm2(
                 Button(
                     onClick = {
                         viewModel.guardarFacturaEnFirestore()
-                        navController.navigate("Home")
+                        navController.navigate("FRHome")
                     },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally) // Centering the button horizontally
