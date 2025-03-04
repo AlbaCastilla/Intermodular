@@ -1,4 +1,4 @@
-package com.example.intermodular.ui.screens.factEmitidas.info
+package com.example.intermodular.ui.screens.factRecibidas.form
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -31,21 +30,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
+import com.example.intermodular.navigation.AppScreens
 
 
 /**
- * FORMULARIO CONFIRMACION IMPORTE  DE FACTURA
+ * FORMULARIO DE AÑADIR FACTURA
  */
+
+
 @Composable
-fun FEmitidasInfo(viewModel: FEmitidasInfoViewModel, indicadorProgresoViewModel: IndicadorProgresoViewModel) {
+fun FormularioFR(viewModel: FormularioFRViewModel, indicadorProgresoViewModel: IndicadorProgresoViewModel, navController: NavHostController) {
 
-    val moneyCharge by viewModel.moneyCharge.observeAsState("")
-    val totalAccount by viewModel.totalAccount.observeAsState("0.00") // q empiece en 0
-    val taxType by viewModel.taxType.observeAsState(0.21)//asignams vlor por defecto
-
-    //me faltan variables jiji
+    //declaracion de las variables de nuestro viewModel
+    val companiaNombre: String by viewModel.companiaNombre.observeAsState(initial = "")
+    val nif: String by viewModel.nif.observeAsState(initial = "")
+    val direccion: String by viewModel.direccion.observeAsState(initial = "")
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
@@ -57,20 +59,30 @@ fun FEmitidasInfo(viewModel: FEmitidasInfoViewModel, indicadorProgresoViewModel:
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Text(text = "Iniciar sesión")
+
+            //indicador de progreso
+//            IndicadorProgreso(
+//                viewModel = indicadorProgresoViewModel,
+//                pasosTotales = 3
+//            )
+
             //las llamadas al resto de funciones las haremos en FuncionesLogin
-            FuncionesFEmitidasInfo(
+            FuncionesFormularioFR(
                 viewModel = viewModel,
-                moneyCharge = moneyCharge,
-                totalAccount = totalAccount,
-                indicadorProgresoViewModel = indicadorProgresoViewModel
+                companiaNombre = companiaNombre,
+                nif = nif,
+                direccion = direccion,
+                indicadorProgresoViewModel = indicadorProgresoViewModel,
+                navController = navController
             )
         }
     }
+
 }
 
-
 @Composable
-fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indicadorProgresoViewModel: IndicadorProgresoViewModel){
+fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorProgresoViewModel: IndicadorProgresoViewModel, viewModel: FormularioFRViewModel, navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -86,14 +98,14 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Invoice's receiver information",
+                text = "Invoice issuer information",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Please complete the following fields on the invoice receiver's information",
+                text = "Please complete the following fields on the invoice issuer information",
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 color = Color.Gray
@@ -101,15 +113,15 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Money charge",
+                text = "Company/personal full name",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
             )
             OutlinedTextField(
-                value = moneyCharge,
-                onValueChange = { /* = it*/ },
+                value = companiaNombre,
+                onValueChange = { viewModel.actualizarCompaniaNombre(it) },
                 singleLine = true,
-                label = { Text("000000") },
+                label = { Text("Jane Doe") },
                 shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -117,13 +129,13 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
 
 
             Text(
-                text = "Total amount",
+                text = "NIF",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
             )
             OutlinedTextField(
-                value = totalAccount,
-                onValueChange = { /*nif = it*/ },
+                value = nif,
+                onValueChange = { viewModel.actualizarNif(it) },
                 singleLine = true,
                 label = { Text("00000000P") },
                 shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
@@ -132,35 +144,26 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
             Spacer(modifier = Modifier.height(12.dp))
 
 
+            Text(
+                text = "Adress",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
             OutlinedTextField(
-                value = totalAccount,
-                onValueChange = { /*viewModel.updateTotalAccount(it)*/ },
+                value = direccion,
+                onValueChange = { viewModel.actualizarDireccion(it) },
                 singleLine = true,
-                label = { Text("Total amount") },
-                shape = RoundedCornerShape(16.dp),
+                label = { Text("xxxxxx") },
+                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(text = "Tax Type", modifier = Modifier.fillMaxWidth())
-//            DropdownMenu(expanded = true, onDismissRequest = { }) {
-//                taxOptions.forEach { tax ->
-//                    DropdownMenuItem(onClick = {
-//                        selectedTax = tax
-//                        viewModel.updateTaxType(tax)
-//                    }) {
-//                        Text(text = tax)
-//                    }
-//                }
-//            }
-            Spacer(modifier = Modifier.height(12.dp))
-
-
             Button(
                 onClick = {
-
-                    /**aqui llamar a la funcion del indicador de progreso para avanzar*/
+                    /*viewModel.guardarFacturaEmitida(companiaNombre, nif, direccion)*/
                     indicadorProgresoViewModel.avanzarPaso(3)
+                    navController.navigate(AppScreens.FormularioFR2.ruta)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
@@ -182,24 +185,33 @@ fun CardForm2(moneyCharge: String, totalAccount: String, taxType: String, indica
 
 
 @Composable
-fun FuncionesFEmitidasInfo(
-    viewModel: FEmitidasInfoViewModel,
-    moneyCharge: String,
-    totalAccount: String,
-    indicadorProgresoViewModel: IndicadorProgresoViewModel
+fun FuncionesFormularioFR(
+    viewModel: FormularioFRViewModel,
+    companiaNombre: String,
+    nif: String,
+    direccion: String,
+    indicadorProgresoViewModel: IndicadorProgresoViewModel,
+    navController: NavHostController
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5)),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        IndicadorProgreso(
+            viewModel = indicadorProgresoViewModel,
+            pasosTotales = 3
+        )
 
-        ){
-            IndicadorProgreso(
-                viewModel = indicadorProgresoViewModel,
-                pasosTotales = 3
-            )
+        CardForm(
+            companiaNombre = companiaNombre,
+            nif = nif,
+            direccion = direccion,
+            viewModel = viewModel, // Pasamos el ViewModel
+            indicadorProgresoViewModel = indicadorProgresoViewModel,
+            navController = navController
+        )
     }
 }
