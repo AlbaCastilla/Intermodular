@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.intermodular.navigation.AppScreens
 import com.google.firebase.auth.FirebaseAuth
-
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(viewModel: LoginViewModel, navController: NavHostController) {
@@ -133,4 +133,121 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
         }
     )
 }
+*/
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Login(viewModel: LoginViewModel, navController: NavHostController) {
+    val email = viewModel.email.observeAsState(initial = "") // Provide a default value if null
+    val password = viewModel.password.observeAsState(initial = "") // Provide a default value if null
+    val loginResult = viewModel.loginResult.observeAsState() // Provide a default value if null
+    val errorMessage = viewModel.errorMessage.observeAsState() // Provide a default value if null
+    val userId = viewModel.userId.observeAsState() // Provide a default value if null
+
+    val context = LocalContext.current
+
+    // Scaffold setup
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Login") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+            )
+        },
+        content = { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFFF5F5F5))
+                    .padding(paddingValues),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(24.dp)
+                ) {
+                    Text(
+                        text = "Enter your email and password",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = Color.Black,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    // Card for input fields
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = CardDefaults.elevatedCardElevation(4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(text = "Email", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                            OutlinedTextField(
+                                value = email.value ?: "", // Use empty string if null
+                                onValueChange = { viewModel.actualizarEmail(it) },
+                                singleLine = true,
+                                label = { Text("Email") },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            Text(text = "Password", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+                            OutlinedTextField(
+                                value = password.value ?: "", // Use empty string if null
+                                onValueChange = { viewModel.actualizarPassword(it) },
+                                singleLine = true,
+                                label = { Text("Password") },
+                                visualTransformation = PasswordVisualTransformation(),
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            Button(
+                                onClick = {
+                                    viewModel.iniciarSesion(context)
+                                    if (loginResult.value == true) { // Check if login was successful
+                                        navController.navigate(AppScreens.Home.ruta)
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text(text = "Login", fontSize = 16.sp)
+                            }
+
+                            // Show login result message
+                            loginResult.value?.let { // Access value directly
+                                if (it) {
+                                    Text(
+                                        text = "Logged in successfully! User ID: ${userId.value ?: ""}", // Fallback to empty string if null
+                                        color = Color.Green,
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.padding(top = 16.dp)
+                                    )
+                                } else {
+                                    Text(
+                                        text = "Login failed! ${errorMessage.value ?: "Unknown error"}", // Fallback message
+                                        color = Color.Red,
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.padding(top = 16.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    )
+}
