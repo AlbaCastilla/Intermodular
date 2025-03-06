@@ -1,4 +1,4 @@
-package com.example.intermodular.ui.screens.factEmitidas.form
+package com.example.intermodular.ui.screens.factRecibidas.form
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -35,12 +34,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
-import com.example.intermodular.navigation.AppScreens
 
 
 @Composable
-fun FuncionesFormularioFE3(
-    viewModel: FormularioFEViewModel,
+fun FuncionesFormularioFR3(
+    viewModel: FormularioFRViewModel,
     indicadorProgresoViewModel: IndicadorProgresoViewModel,
     navController: NavHostController
 ) {
@@ -52,20 +50,8 @@ fun FuncionesFormularioFE3(
     val iva by viewModel.iva.observeAsState(21)
     val total by viewModel.total.observeAsState(0.0)
 
-
-    val companiaNombreUsuario by viewModel.companiaNombreUsuario.observeAsState("")
-    val nifUsuario by viewModel.nifUsuario.observeAsState("")
-    val direccionUsuario by viewModel.direccionUsuario.observeAsState("")
-    val emailUsuario by viewModel.emailUsuario.observeAsState("")
-    val phoneNumberUsuario by viewModel.phoneNumberUsuario.observeAsState("")
-    val displayNameUsuario by viewModel.displayNameUsuario.observeAsState("")
-
-
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        viewModel.cargarDatosUsuario(context)
-    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,12 +71,6 @@ fun FuncionesFormularioFE3(
             valor = valor,
             iva =iva,
             total =total,
-            companiaNombreUsuario = companiaNombreUsuario,
-            nifUsuario = nifUsuario,
-            direccionUsuario = direccionUsuario,
-            emailUsuario = emailUsuario,
-            phoneNumberUsuario = phoneNumberUsuario,
-            displayNameUsuario = displayNameUsuario,
             viewModel = viewModel,
             navController = navController
         )
@@ -105,13 +85,7 @@ fun CardForm2(
     valor: Comparable<*>,
     iva: Int,
     total: Double,
-    companiaNombreUsuario: String,
-    nifUsuario: String,
-    direccionUsuario: String,
-    emailUsuario: String,
-    phoneNumberUsuario: String,
-    displayNameUsuario: String,
-    viewModel: FormularioFEViewModel,
+    viewModel: FormularioFRViewModel,
     navController: NavHostController
 ) {
     Column(
@@ -133,24 +107,6 @@ fun CardForm2(
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                // Hecho por Section
-                Text(
-                    text = "Hecho por:",
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(text = "Compañía Usuario: $companiaNombreUsuario")
-                Text(text = "NIF Usuario: $nifUsuario")
-                Text(text = "Dirección Usuario: $direccionUsuario")
-                Text(text = "Email Usuario: $emailUsuario")
-
-                // Divider
-                Divider(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    color = Color(0xFF9D9595), // Divider color
-                    thickness = 2.dp
-                )
-
                 // Datos de la factura Section
                 Text(
                     text = "Datos de la factura:",
@@ -169,7 +125,7 @@ fun CardForm2(
                 Button(
                     onClick = {
                         viewModel.guardarFacturaEnFirestore()
-                        navController.navigate(AppScreens.FEHome.ruta)
+                        navController.navigate("FRHome")
                     },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally) // Centering the button horizontally
@@ -187,7 +143,7 @@ fun CardForm2(
                     )
                 }
                 Button(
-                    onClick = { navController.navigate("FormularioFE2") /*viewModel.guardarFacturaEnFirestore() */} ,
+                    onClick = { navController.navigate("FormularioFR2") /*viewModel.guardarFacturaEnFirestore() */} ,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally) // Centering the button horizontally
                         .fillMaxWidth(0.6f) // Adjusting the button width to 60% of screen
@@ -205,7 +161,7 @@ fun CardForm2(
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         Icons.Default.ArrowBack,
-                        contentDescription = "Siguiente",
+                        contentDescription = "Atras",
                         tint = Color.White
                     )
                 }
@@ -213,4 +169,5 @@ fun CardForm2(
         }
     }
 }
+
 

@@ -9,8 +9,8 @@ import com.example.intermodular.componentes.barraNavegacion.NavItem
 
 class NavigationViewModel : ViewModel() {
     val navItems = listOf(
-        NavItem("FormularioFE", Icons.Default.Send, "Sent"),
+        NavItem("FEHome", Icons.Default.Send, "Sent"),
         NavItem("home", Icons.Default.Home, "Home"),
-        NavItem("received", Icons.Default.Star, "Received")
+        NavItem("FRHome", Icons.Default.Star, "Received")
     )
 }
