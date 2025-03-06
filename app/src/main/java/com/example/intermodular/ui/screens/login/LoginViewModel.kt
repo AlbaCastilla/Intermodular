@@ -184,7 +184,9 @@ class LoginViewModel : ViewModel() {
                         _userId.value = user?.uid ?: ""
 
                         // Una vez logueado, carga los datos del usuario desde Firestore
-                        cargarDatosDesdeFirestore(context, userEmail, user)
+                        cargarDatosDesdeFirestore(context, userEmail, user){
+                            _loginResult.value = true
+                        }
                     } else {
                         _loginResult.value = false
                         _errorMessage.value = task.exception?.message
@@ -193,7 +195,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    private fun cargarDatosDesdeFirestore(context: Context, email: String, user: FirebaseUser?) {
+    private fun cargarDatosDesdeFirestore(context: Context, email: String, user: FirebaseUser?, onComplete: () -> Unit) {
         firestore.collection("usuarios")
             .whereEqualTo("email", email)  // Buscamos por email
             .get()
@@ -209,14 +211,18 @@ class LoginViewModel : ViewModel() {
                     _address.value = direccion
                     _nif.value = nif
 
+                    onComplete()//que haga el login cuando los datos ya esten cargados
+
                     // Guardamos todo en SharedPreferences
                     guardarDatosUsuario(context, user, companiaNombre, direccion, nif)
                 } else {
                     Log.e("LoginViewModel", "No se encontraron datos para el email $email")
+                    onComplete()
                 }
             }
             .addOnFailureListener { exception ->
                 Log.e("LoginViewModel", "Error al buscar datos de usuario: ${exception.message}")
+                onComplete()
             }
     }
 

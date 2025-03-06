@@ -213,12 +213,19 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
 
                             Spacer(modifier = Modifier.height(20.dp))
 
+                            LaunchedEffect(loginResult.value) {
+                                if (loginResult.value == true) {
+                                    navController.navigate(AppScreens.Home.ruta) // Navega solo si el login es exitoso
+                                }
+                            }
+
+
                             Button(
                                 onClick = {
                                     viewModel.iniciarSesion(context)
-                                    if (loginResult.value == true) { // Check if login was successful
-                                        navController.navigate(AppScreens.Home.ruta)
-                                    }
+//                                    if (loginResult.value == true) { // Check if login was successful
+//                                        navController.navigate(AppScreens.Home.ruta)
+//                                    }
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(8.dp)
