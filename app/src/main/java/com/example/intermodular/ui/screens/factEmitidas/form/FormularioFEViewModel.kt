@@ -336,15 +336,15 @@ class FormularioFEViewModel : ViewModel() {
     fun cargarDatosUsuario(context: Context) {
         val sharedPreferences = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
 
-        _companiaNombreUsuario.value = sharedPreferences.getString("companiaNombre", "")
+        _companiaNombreUsuario.value = sharedPreferences.getString("company_name", "")
         _nifUsuario.value = sharedPreferences.getString("nif", "")
-        _direccionUsuario.value = sharedPreferences.getString("direccion", "")
+        _direccionUsuario.value = sharedPreferences.getString("address", "")
         _emailUsuario.value = sharedPreferences.getString("email", "")
 
 
-        Log.d("SharedPreferences", "Compañía: ${sharedPreferences.getString("companiaNombre", "")}")
+        Log.d("SharedPreferences", "company_name: ${sharedPreferences.getString("company_name", "")}")
         Log.d("SharedPreferences", "NIF: ${sharedPreferences.getString("nif", "")}")
-        Log.d("SharedPreferences", "Dirección: ${sharedPreferences.getString("direccion", "")}")
+        Log.d("SharedPreferences", "address: ${sharedPreferences.getString("address", "")}")
         Log.d("SharedPreferences", "Email: ${sharedPreferences.getString("email", "")}")
     }
 

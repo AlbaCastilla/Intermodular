@@ -2,13 +2,17 @@ package com.example.intermodular.navigation
 
 import FEHomeViewModel
 import FormularioConProgreso
+import Home
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgreso
 import com.example.intermodular.componentes.indicadorProgreso.IndicadorProgresoViewModel
+import com.example.intermodular.ui.screens.Perfil.Perfil
+import com.example.intermodular.ui.screens.Perfil.PerfilViewModel
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFE
 
 import com.example.intermodular.ui.screens.factEmitidas.form.FormularioFEViewModel
@@ -22,7 +26,7 @@ import com.example.intermodular.ui.screens.factRecibidas.form.FuncionesFormulari
 import com.example.intermodular.ui.screens.factRecibidas.screen.FRHome
 import com.example.intermodular.ui.screens.factRecibidas.screen.FRHomeViewModel
 
-import com.example.intermodular.ui.screens.home.Home
+
 import com.example.intermodular.ui.screens.home.HomeViewModel
 import com.example.intermodular.ui.screens.login.Login
 import com.example.intermodular.ui.screens.login.LoginViewModel
@@ -35,6 +39,7 @@ fun NavigationWrapper (navController: NavHostController) {
 
     //variables para los viewModel
     val homeViewModel: HomeViewModel = viewModel()
+    val perfilViewModel: PerfilViewModel = viewModel()
     val loginViewModel: LoginViewModel = viewModel()
     val registroViewModel: RegistroViewModel = viewModel()
     val formularioFEViewModel: FormularioFEViewModel = viewModel()
@@ -52,6 +57,13 @@ fun NavigationWrapper (navController: NavHostController) {
                 navController = navController // ← Pasa el NavController correcto
             )
         }
+        composable(AppScreens.Perfil.ruta){
+            Perfil(
+                viewModel = perfilViewModel,
+                navController = navController
+            )
+        }
+
         composable(AppScreens.Login.ruta){
             Login(
                 viewModel = loginViewModel,
@@ -135,3 +147,5 @@ fun NavigationWrapper (navController: NavHostController) {
 
     }
 }
+
+
