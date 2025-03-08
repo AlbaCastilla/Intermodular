@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +18,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -287,6 +291,10 @@ fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
     )
 }*/
 
+
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
@@ -314,7 +322,9 @@ fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
                         )
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(
+                    0xFF579B9B
+                )/*MaterialTheme.colorScheme.primary*/)
             )
         },
         bottomBar = {
@@ -343,56 +353,51 @@ fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
                         modifier = Modifier
                             .size(120.dp)
                             .clip(CircleShape)
-                            .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape),
-                        tint = MaterialTheme.colorScheme.primary
+                            .border(2.dp, /*MaterialTheme.colorScheme.primary*/Color.LightGray, CircleShape),
+                        tint = Color.LightGray//MaterialTheme.colorScheme.primary
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
-                    // Campo para email, solo de lectura
+                     // Email solo de lectura
                     Text(
                         text = email,
+                        color = Color(0xFF757575),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.Normal,
                             fontSize = 16.sp
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
-                            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                            .background(Color.White, RoundedCornerShape(8.dp))
                             .padding(12.dp)
+                            .align(Alignment.CenterHorizontally)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Campo editable para el nombre de la compañía
-                    OutlinedTextField(
+                    // Campo para Company Name
+                    CustomTextField(
                         value = companyName,
-                        onValueChange = { viewModel._companyName.value = it },
-                        label = { Text("Company Name") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        label = "Company Name",
+                        onValueChange = { viewModel._companyName.value = it }
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Campo editable para la dirección
-                    OutlinedTextField(
+                    // Campo para Address
+                    CustomTextField(
                         value = address,
-                        onValueChange = { viewModel._address.value = it },
-                        label = { Text("Address") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        label = "Address",
+                        onValueChange = { viewModel._address.value = it }
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Campo editable para el NIF
-                    OutlinedTextField(
+                    // Campo para NIF/DNI
+                    CustomTextField(
                         value = nif,
-                        onValueChange = { viewModel._nif.value = it },
-                        label = { Text("NIF") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        label = "NIF/DNI",
+                        onValueChange = { viewModel._nif.value = it }
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -402,7 +407,8 @@ fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
                             viewModel.guardarDatosUsuario(context)
                             viewModel.actualizarUsuarioEnFirebase(context)
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6FA0A8))
                     ) {
                         Text("Update Profile")
                     }
@@ -424,7 +430,8 @@ fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
                             // Redirigir al login después de cerrar sesión
                             navController.navigate("Login")  // Reemplaza "login_route" con la ruta correcta de tu login
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F))
                     ) {
                         Text("Logout")
                     }
@@ -436,3 +443,37 @@ fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
 }
 
 
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomTextField(value: String, label: String, onValueChange: (String) -> Unit) {
+    val borderColor = if (value.isBlank()) Color.Red else Color(0xFF6200EA)
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp),
+        singleLine = true,
+        shape = RoundedCornerShape(16.dp),
+        isError = value.isBlank(),
+        trailingIcon = {
+            if (value.isNotBlank()) {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = "Valid",
+                    tint = Color.Green
+                )
+            }
+        },
+        colors = androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = borderColor,
+            unfocusedBorderColor = Color(0xFFDDDDDD),
+            cursorColor = Color(0xFF6200EA)
+        )
+    )
+}

@@ -5,6 +5,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.ui.res.painterResource
+import com.example.intermodular.R
 import com.example.intermodular.componentes.barraNavegacion.NavItem
 
 class NavigationViewModel : ViewModel() {
