@@ -218,6 +218,7 @@ fun Home(viewModel: HomeViewModel, navController: NavHostController) {
 
                 // Displaying the difference between Facturas and FacturasRe
                 TotalBox(title = "Diferencia final actual", amount = viewModel.totalResta.value ?: 0.0)
+
             }
         }
     }
@@ -257,7 +258,7 @@ fun TotalBox(title: String, amount: Double) {
                     text = "$${"%.2f".format(amount)}",
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF008080) // Color elegante tipo verde azulado
+                    color = Color(0xFF008080)
                 )
             }
         }
@@ -290,7 +291,7 @@ fun ProfileCard(navController: NavHostController) {
             Text(
                 text = "Ver Perfil",
                 fontSize = 18.sp,
-                color = Color(0xFF6F95AC)
+                color = Color(0xFF008080)
             )
         }
     }
