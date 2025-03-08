@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.barraNavegacion.BottomNavigationBarComponent
 import com.example.intermodular.ui.screens.home.HomeViewModel
+import androidx.compose.ui.graphics.Brush
 /*
 @Composable
 fun Home(viewModel: HomeViewModel, navController: NavHostController) {
@@ -163,6 +164,8 @@ fun ProfileCard(navController: NavHostController) {
     }
 }*/
 
+
+
 @Composable
 fun Home(viewModel: HomeViewModel, navController: NavHostController) {
     Scaffold(
@@ -226,20 +229,36 @@ fun TotalBox(title: String, amount: Double) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp)), // Elegante sin color de fondo
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent), // Sin color de fondo
+            .shadow(elevation = 6.dp, shape = RoundedCornerShape(16.dp)),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(0xFFEEEEEE), Color(0xFFDADADA))
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = title, fontSize = 16.sp, color = Color.Black) // Título en negro
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "$${"%.2f".format(amount)}", fontSize = 24.sp, color = Color.Black) // Monto en negro
+                Text(
+                    text = title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.DarkGray
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "$${"%.2f".format(amount)}",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF008080) // Color elegante tipo verde azulado
+                )
             }
         }
     }
