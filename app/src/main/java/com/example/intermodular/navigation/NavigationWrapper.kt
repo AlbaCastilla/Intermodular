@@ -72,7 +72,8 @@ fun NavigationWrapper (navController: NavHostController) {
         }
         composable(AppScreens.Registro.ruta){
             Registro(
-                viewModel = registroViewModel
+                viewModel = registroViewModel,
+                navController = navController
                 //luego añadiremos el navController q sino da error :)
             )
         }

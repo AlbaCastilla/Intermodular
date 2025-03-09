@@ -3,6 +3,7 @@ package com.example.intermodular.ui.screens.login
 import androidx.compose.runtime.Composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -150,8 +151,10 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Login") },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+                title = { Text("LogIn") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(
+                    0xFF579B9B
+                ))
             )
         },
         content = { paddingValues ->
@@ -195,7 +198,13 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
                                 singleLine = true,
                                 label = { Text("Email") },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(16.dp)
+                                shape = RoundedCornerShape(16.dp),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
 
                             Spacer(modifier = Modifier.height(12.dp))
@@ -208,7 +217,13 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
                                 label = { Text("Password") },
                                 visualTransformation = PasswordVisualTransformation(),
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(16.dp)
+                                shape = RoundedCornerShape(16.dp),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
 
                             Spacer(modifier = Modifier.height(20.dp))
@@ -221,10 +236,26 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF577A8E) // Button color
+                                ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
                                 Text(text = "Login", fontSize = 16.sp)
                             }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = "Don't have an account yet? Register",
+                                color = Color(0xFF577A8E),
+                                modifier = Modifier
+                                    .clickable {
+                                        navController.navigate(AppScreens.Registro.ruta)
+                                    }
+                                    .padding(top = 8.dp),
+                                textAlign = TextAlign.Center
+                            )
 
                             // Show login result message
                             loginResult.value?.let { // Access value directly
