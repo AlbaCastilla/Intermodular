@@ -25,6 +25,7 @@ import com.example.intermodular.ui.screens.factRecibidas.form.FormularioFRViewMo
 import com.example.intermodular.ui.screens.factRecibidas.form.FuncionesFormularioFR3
 import com.example.intermodular.ui.screens.factRecibidas.screen.FRHome
 import com.example.intermodular.ui.screens.factRecibidas.screen.FRHomeViewModel
+import com.example.intermodular.ui.screens.inicial.VistaInicial
 
 
 import com.example.intermodular.ui.screens.home.HomeViewModel
@@ -50,7 +51,12 @@ fun NavigationWrapper (navController: NavHostController) {
 
 
 
-    NavHost(navController = navController, startDestination = AppScreens.Registro.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.VistaInicial.ruta) {
+        composable(AppScreens.VistaInicial.ruta){
+            VistaInicial(
+                navController = navController
+            )
+        }
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel,
