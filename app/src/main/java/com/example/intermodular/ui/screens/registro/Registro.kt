@@ -1,6 +1,7 @@
 package com.example.intermodular.ui.screens.registro
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
@@ -19,10 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.intermodular.models.User
+import com.example.intermodular.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registro(viewModel: RegistroViewModel) {
+fun Registro(viewModel: RegistroViewModel, navController: NavHostController) {
     val companyName: String by viewModel.companyName.observeAsState(initial = "")
     val address: String by viewModel.address.observeAsState(initial = "")
     val email: String by viewModel.email.observeAsState(initial = "")
@@ -40,7 +42,7 @@ fun Registro(viewModel: RegistroViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Registro") },
+                title = { Text("Register") },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(
                     0xFF579B9B
                 ))
@@ -98,7 +100,13 @@ fun Registro(viewModel: RegistroViewModel) {
                                 singleLine = true,
                                 label = { Text("Company/personal full name") },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) }
+                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
                             companyNameError?.let {
                                 Text(
@@ -123,7 +131,13 @@ fun Registro(viewModel: RegistroViewModel) {
                                 singleLine = true,
                                 label = { Text("Address") },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) }
+                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
                             addressError?.let {
                                 Text(
@@ -148,7 +162,13 @@ fun Registro(viewModel: RegistroViewModel) {
                                 singleLine = true,
                                 label = { Text("Email") },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) }
+                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
                             emailError?.let {
                                 Text(
@@ -173,7 +193,13 @@ fun Registro(viewModel: RegistroViewModel) {
                                 singleLine = true,
                                 label = { Text("NIF") },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) }
+                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
                             nifError?.let {
                                 Text(
@@ -199,7 +225,13 @@ fun Registro(viewModel: RegistroViewModel) {
                                 label = { Text("Password") },
                                 visualTransformation = PasswordVisualTransformation(),
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) }
+                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
                             passwordError?.let {
                                 Text(
@@ -225,7 +257,13 @@ fun Registro(viewModel: RegistroViewModel) {
                                 label = { Text("Confirm Password") },
                                 visualTransformation = PasswordVisualTransformation(),
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) }
+                                shape = with(MaterialTheme) { shapes.large.copy(all = CornerSize(16.dp)) },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color(0xFF577A8E),
+                                    unfocusedBorderColor = Color(0xFF577A8E),
+                                    cursorColor = Color(0xFF577A8E),
+                                    focusedLabelColor = Color(0xFF577A8E),
+                                )
                             )
                             confirmPasswordError?.let {
                                 Text(
@@ -256,8 +294,21 @@ fun Registro(viewModel: RegistroViewModel) {
                                     containerColor = Color(0xFF577A8E) // Button color
                                 ),
                             ) {
-                                Text("Registrar")
+                                Text("Register")
                             }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Text(
+                                text = "Already have an account? Log in",
+                                color = Color(0xFF577A8E),
+                                modifier = Modifier
+                                    .clickable {
+                                        navController.navigate(AppScreens.Login.ruta)
+                                    }
+                                    .padding(top = 8.dp),
+                                textAlign = TextAlign.Center
+                            )
 
                         }   }
                 }
