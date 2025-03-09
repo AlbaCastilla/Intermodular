@@ -1,6 +1,8 @@
 package com.example.intermodular.navigation
 
 sealed class AppScreens(val ruta: String){
+    object VistaInicial: AppScreens("VistaInicial")
+
     object Home: AppScreens("Home")
     object Perfil: AppScreens("Perfil")
     object Login: AppScreens("Login")

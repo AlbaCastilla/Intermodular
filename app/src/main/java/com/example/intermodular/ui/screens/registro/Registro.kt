@@ -42,9 +42,15 @@ fun Registro(viewModel: RegistroViewModel, navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Register") },
+                title = {
+                    Text(
+                        "Register",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(
-                    0xFF579B9B
+                    0xFF577A8E
                 ))
             )
         },

@@ -1,5 +1,6 @@
 package com.example.intermodular.ui.screens.login
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 
 import androidx.compose.foundation.background
@@ -151,9 +152,15 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("LogIn") },
+                title = {
+                    Text(
+                        "LogIn",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(
-                    0xFF579B9B
+                    0xFF577A8E
                 ))
             )
         },
@@ -260,12 +267,13 @@ fun Login(viewModel: LoginViewModel, navController: NavHostController) {
                             // Show login result message
                             loginResult.value?.let { // Access value directly
                                 if (it) {
-                                    Text(
-                                        text = "Logged in successfully! User ID: ${userId.value ?: ""}", // Fallback to empty string if null
-                                        color = Color.Green,
-                                        fontSize = 16.sp,
-                                        modifier = Modifier.padding(top = 16.dp)
-                                    )
+//                                    Text(
+//                                        L = "Logged in successfully! User ID: ${userId.value ?: ""}", // Fallback to empty string if null
+//                                        color = Color.Green,
+//                                        fontSize = 16.sp,
+//                                        modifier = Modifier.padding(top = 16.dp)
+//                                    )
+                                    Log.d("LoginViewModel", "Logged in successfully! User ID: ${userId.value ?: ""}")
                                 } else {
                                     Text(
                                         text = "Login failed! ${errorMessage.value ?: "Unknown error"}", // Fallback message

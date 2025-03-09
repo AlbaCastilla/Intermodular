@@ -23,7 +23,7 @@ fun BottomNavigationBarComponent(
     val selectedRoute by navController.currentBackStackEntryAsState()
 
     // Barra de navegación inferior
-    NavigationBar(containerColor = Color(0xFFB0D7D7)) {
+    NavigationBar(containerColor = Color(0xFF9BB7C5)) {
         // Iterar sobre los elementos de navegación definidos en el ViewModel
         viewModel.navItems.forEach { item ->
             // Verificar si el item es el seleccionado
