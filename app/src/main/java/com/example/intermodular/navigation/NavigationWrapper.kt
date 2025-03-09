@@ -50,7 +50,7 @@ fun NavigationWrapper (navController: NavHostController) {
 
 
 
-    NavHost(navController = navController, startDestination = AppScreens.Home.ruta) {
+    NavHost(navController = navController, startDestination = AppScreens.Registro.ruta) {
         composable(AppScreens.Home.ruta){
             Home(
                 viewModel = homeViewModel,

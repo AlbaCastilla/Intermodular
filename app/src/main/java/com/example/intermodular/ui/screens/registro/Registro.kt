@@ -41,7 +41,9 @@ fun Registro(viewModel: RegistroViewModel) {
         topBar = {
             TopAppBar(
                 title = { Text("Registro") },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(
+                    0xFF579B9B
+                ))
             )
         },
         content = { paddingValues ->
@@ -249,9 +251,12 @@ fun Registro(viewModel: RegistroViewModel) {
                                     }
                                 },
                                 enabled = isFieldsFilled,  // Button enabled only when all fields are filled
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF577A8E) // Button color
+                                ),
                             ) {
-                                Text("Register")
+                                Text("Registrar")
                             }
 
                         }   }
