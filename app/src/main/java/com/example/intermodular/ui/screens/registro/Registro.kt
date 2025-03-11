@@ -188,7 +188,7 @@ fun Registro(viewModel: RegistroViewModel, navController: NavHostController) {
                             Spacer(modifier = Modifier.height(12.dp))
 
                             Text(
-                                text = "Company/personal NIF",
+                                text = "Company/personal TIN",
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Start
                             )

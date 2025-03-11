@@ -61,7 +61,7 @@ fun FormularioFE(viewModel: FormularioFEViewModel, indicadorProgresoViewModel: I
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(text = "Iniciar sesión")
+            //Text(text = "Login")
 
             //indicador de progreso
 //            IndicadorProgreso(
@@ -131,7 +131,7 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
 
 
             Text(
-                text = "NIF",
+                text = "TIN",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
             )

@@ -404,7 +404,7 @@ fun Perfil(viewModel: PerfilViewModel, navController: NavHostController) {
                     // Campo para NIF/DNI
                     CustomTextField(
                         value = nif,
-                        label = "NIF/DNI",
+                        label = "TIN",
                         onValueChange = { viewModel._nif.value = it }
                     )
 

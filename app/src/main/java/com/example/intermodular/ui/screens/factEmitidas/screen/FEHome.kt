@@ -137,8 +137,8 @@ fun CardForm(
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(text = "Empresa: $companiaNombre")
-                        Text(text = "Dirección: $direccion")
+                        Text(text = "Company: $companiaNombre")
+                        Text(text = "Adress: $direccion")
                     }
                     Text(
                         text = "+ $${"%.2f".format(total)}",

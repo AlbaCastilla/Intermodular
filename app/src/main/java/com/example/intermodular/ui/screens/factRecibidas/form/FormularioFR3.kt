@@ -113,16 +113,16 @@ fun CardForm2(
             ) {
                 // Datos de la factura Section
                 Text(
-                    text = "Datos de la factura:",
+                    text = "Invoice Data:",
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Text(text = "Compañía: $companiaNombre")
-                Text(text = "NIF: $nif")
-                Text(text = "Dirección: $direccion")
-                Text(text = "Valor: $valor")
-                Text(text = "IVA: $iva")
-                Text(text = "Total: $total")
+                Text(text = "Company: $companiaNombre")
+                Text(text = "TIN: $nif")
+                Text(text = "Adress: $direccion")
+                Text(text = "Sum: $valor")
+                Text(text = "VAT: $iva")
+                Text(text = "Total Sum: $total")
 
                 // Save button
                 Spacer(modifier = Modifier.height(16.dp)) // Adding space before the button
@@ -141,7 +141,7 @@ fun CardForm2(
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        text = "Guardar",
+                        text = "Save",
                         color = Color.White, // Button text color
                         fontSize = 16.sp,
                     )
@@ -158,7 +158,7 @@ fun CardForm2(
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        text = "Atras",
+                        text = "Back",
                         color = Color.White, // Button text color
                         fontSize = 16.sp,
                     )

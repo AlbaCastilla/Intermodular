@@ -60,7 +60,7 @@ fun FormularioFR(viewModel: FormularioFRViewModel, indicadorProgresoViewModel: I
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(text = "Iniciar sesión")
+            //Text(text = "Iniciar sesión")
 
             //indicador de progreso
 //            IndicadorProgreso(
@@ -130,7 +130,7 @@ fun CardForm(companiaNombre: String, nif: String, direccion: String, indicadorPr
 
 
             Text(
-                text = "NIF",
+                text = "TIN",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
             )

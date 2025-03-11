@@ -206,37 +206,29 @@ fun Home(viewModel: HomeViewModel, navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                emailUsuario?.let {
-                    Text(
-                        text = "Email: $it",
-                        fontSize = 16.sp,
-                        color = Color.Gray
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Bienvenido a tu aplicación de facturas",
+                    text = "Welcome to your Invoice App",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Aquí podrás gestionar y realizar un seguimiento de todas tus facturas de manera fácil y eficiente.",
+                    text = "Perfect for managing and keeping up to date with your invoice transactions in an easy and efficient way",
                     fontSize = 14.sp,
                     color = Color(0xFF0D47A1)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                TotalBox(title = "Total de facturas salientes", amount = totalFacturas)
+                TotalBox(title = "Total sum of invoices sent", amount = totalFacturas)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                TotalBox(title = "Total de facturas entrantes", amount = totalFacturasRe)
+                TotalBox(title = "Total sum of invoices recieved", amount = totalFacturasRe)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                TotalBox(title = "Diferencia final actual", amount = totalResta)
+                TotalBox(title = "Difference of final amount", amount = totalResta)
             }
         }
     }
@@ -308,7 +300,7 @@ fun ProfileCard(navController: NavHostController) {
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "Ver Perfil",
+                text = "View Profile",
                 fontSize = 18.sp,
                 color = Color(0xFF008080)
             )

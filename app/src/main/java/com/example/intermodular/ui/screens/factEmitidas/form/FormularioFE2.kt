@@ -141,7 +141,7 @@ fun FormularioConProgreso(viewModel: FormularioFEViewModel, indicadorProgresoVie
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Formulario con IVA y Total")
+            //Text(text = "Formulario con IVA y Total")
 
             IndicadorProgreso(
                 viewModel = indicadorProgresoViewModel,
@@ -199,7 +199,7 @@ fun CardForm(valor: String, iva: Int, total: Double, viewModel: FormularioFEView
                 value = valor,
                 onValueChange = { viewModel.actualizarValor(it) },
                 singleLine = true,
-                label = { Text("Valor") },
+                label = { Text("Sum") },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -212,7 +212,7 @@ fun CardForm(valor: String, iva: Int, total: Double, viewModel: FormularioFEView
                 OutlinedTextField(
                     value = "$selectedIva%",
                     onValueChange = { },
-                    label = { Text("IVA") },
+                    label = { Text("VAT") },
                     trailingIcon = {
                         Icon(Icons.Filled.ArrowDropDown, contentDescription = null)
                     },
@@ -279,7 +279,7 @@ fun CardForm(valor: String, iva: Int, total: Double, viewModel: FormularioFEView
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
-                    text = "Atras",
+                    text = "Back",
                     fontSize = 16.sp,
                     color = Color.White, // Button text color
                 )
