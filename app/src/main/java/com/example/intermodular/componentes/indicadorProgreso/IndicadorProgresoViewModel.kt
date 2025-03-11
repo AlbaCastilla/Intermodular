@@ -20,3 +20,5 @@ class IndicadorProgresoViewModel: ViewModel() {
         }
     }
 }
+
+

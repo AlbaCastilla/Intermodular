@@ -29,6 +29,9 @@ class FormularioFRViewModel : ViewModel() {
     private val _clienteId = MutableLiveData<String?>()
     val clienteId: LiveData<String?> = _clienteId
 
+    private val _emailUsuario = MutableLiveData<String>()
+    val emailUsuario: LiveData<String> = _emailUsuario
+
     // ** Variable local para almacenar el clienteId **
     private var clienteIdLocal: String? = null
 
@@ -65,6 +68,14 @@ class FormularioFRViewModel : ViewModel() {
         return letraCalculada == letraIngresada
     }
 
+    fun cargarDatosUsuario(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("user_data", Context.MODE_PRIVATE)
+
+        _emailUsuario.value = sharedPreferences.getString("email", "")
+
+        Log.d("SharedPreferences", "Email: ${sharedPreferences.getString("email", "")}")
+    }
+
     fun guardarFacturaEnFirestore() {
         val db = FirebaseFirestore.getInstance()
         val coleccion = db.collection("facturasRe")
@@ -87,6 +98,7 @@ class FormularioFRViewModel : ViewModel() {
                     "direccion" to direccion.value,
                     "valor" to valor.value,
                     "iva" to iva.value,
+                    "emailUsuario" to emailUsuario.value,
                     "total" to total.value,
                     "timestamp" to FieldValue.serverTimestamp()
                 )
@@ -94,6 +106,9 @@ class FormularioFRViewModel : ViewModel() {
                 coleccion.add(factura)
                     .addOnSuccessListener { documentReference ->
                         Log.d("Firestore", "Factura guardada con ID: ${documentReference.id}")
+                        _companiaNombre.value = ""
+                        _nif.value = ""
+                        _direccion.value = ""
                     }
                     .addOnFailureListener { e ->
                         Log.w("Firestore", "Error al guardar la factura", e)

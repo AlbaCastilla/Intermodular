@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,12 +40,24 @@ import com.example.intermodular.componentes.barraNavegacion.BottomNavigationBarC
 @Composable
 fun FRHome(viewModel: FRHomeViewModel, navController: NavHostController) {
 
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.cargarDatosUsuario(context)
+    }
+
+    val emailUsuario by viewModel.email.observeAsState()
+
+
     val companias by viewModel.companias.observeAsState(initial = emptyList())
     val direcciones by viewModel.direcciones.observeAsState(initial = emptyList())
     val totales by viewModel.totales.observeAsState(initial = emptyList())
 
-    LaunchedEffect(Unit) {
-        viewModel.obtenerDatos()
+    LaunchedEffect(emailUsuario) {
+        emailUsuario?.let {
+            if (it.isNotEmpty()) {
+                viewModel.obtenerFacturas(it)
+            }
+        }
     }
 
     Scaffold(

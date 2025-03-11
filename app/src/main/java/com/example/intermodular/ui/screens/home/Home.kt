@@ -6,6 +6,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -17,6 +20,8 @@ import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.barraNavegacion.BottomNavigationBarComponent
 import com.example.intermodular.ui.screens.home.HomeViewModel
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
+
 /*
 @Composable
 fun Home(viewModel: HomeViewModel, navController: NavHostController) {
@@ -168,6 +173,17 @@ fun ProfileCard(navController: NavHostController) {
 
 @Composable
 fun Home(viewModel: HomeViewModel, navController: NavHostController) {
+    val context = LocalContext.current
+    val emailUsuario by viewModel.email.observeAsState()
+
+    val totalFacturas by viewModel.totalFacturas.observeAsState(0.0)
+    val totalFacturasRe by viewModel.totalFacturasRe.observeAsState(0.0)
+    val totalResta by viewModel.totalResta.observeAsState(0.0)
+
+    LaunchedEffect(Unit) {
+        viewModel.cargarDatosUsuario(context)
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavigationBarComponent(navController = navController)
@@ -184,14 +200,22 @@ fun Home(viewModel: HomeViewModel, navController: NavHostController) {
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(16.dp)) // Espacio más grande arriba
+                Spacer(modifier = Modifier.height(16.dp))
 
-                // Card for Profile
                 ProfileCard(navController)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Título y texto antes de los TotalBox
+                emailUsuario?.let {
+                    Text(
+                        text = "Email: $it",
+                        fontSize = 16.sp,
+                        color = Color.Gray
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
                     text = "Bienvenido a tu aplicación de facturas",
                     fontSize = 20.sp,
@@ -204,25 +228,20 @@ fun Home(viewModel: HomeViewModel, navController: NavHostController) {
                     color = Color(0xFF0D47A1)
                 )
 
-                Spacer(modifier = Modifier.height(24.dp)) // Más espacio entre los textos y las tarjetas
+                Spacer(modifier = Modifier.height(24.dp))
 
-                // Displaying the total amount for Facturas
-                TotalBox(title = "Total de facturas salientes", amount = viewModel.totalFacturas.value ?: 0.0)
-
+                TotalBox(title = "Total de facturas salientes", amount = totalFacturas)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Displaying the total amount for Facturas received
-                TotalBox(title = "Total de facturas entrantes", amount = viewModel.totalFacturasRe.value ?: 0.0)
-
+                TotalBox(title = "Total de facturas entrantes", amount = totalFacturasRe)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Displaying the difference between Facturas and FacturasRe
-                TotalBox(title = "Diferencia final actual", amount = viewModel.totalResta.value ?: 0.0)
-
+                TotalBox(title = "Diferencia final actual", amount = totalResta)
             }
         }
     }
 }
+
 
 @Composable
 fun TotalBox(title: String, amount: Double) {

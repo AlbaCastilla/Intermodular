@@ -403,6 +403,13 @@ class FormularioFEViewModel : ViewModel() {
                 coleccion.add(factura)
                     .addOnSuccessListener { documentReference ->
                         Log.d("Firestore", "Factura guardada con ID: ${documentReference.id}")
+                        _companiaNombre.value = ""
+                        _nif.value = ""
+                        _direccion.value = ""
+                        _companiaNombreUsuario.value = ""
+                        _nifUsuario.value = ""
+                        _direccionUsuario.value = ""
+                        _emailUsuario.value = ""
                     }
                     .addOnFailureListener { e ->
                         Log.w("Firestore", "Error al guardar la factura", e)

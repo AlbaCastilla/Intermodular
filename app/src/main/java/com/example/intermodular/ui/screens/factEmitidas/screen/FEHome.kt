@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -25,30 +24,40 @@ import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.intermodular.componentes.barraNavegacion.BottomNavigationBarComponent
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.unit.sp
-
 @Composable
 fun FEHome(viewModel: FEHomeViewModel, navController: NavHostController) {
+
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.cargarDatosUsuario(context)
+    }
+
+    val emailUsuario by viewModel.email.observeAsState()
 
     val companias by viewModel.companias.observeAsState(initial = emptyList())
     val direcciones by viewModel.direcciones.observeAsState(initial = emptyList())
     val totales by viewModel.totales.observeAsState(initial = emptyList())
 
-    LaunchedEffect(Unit) {
-        viewModel.obtenerDatos()
+    LaunchedEffect(emailUsuario) {
+        emailUsuario?.let {
+            if (it.isNotEmpty()) {
+                viewModel.obtenerFacturas(it)
+            }
+        }
     }
 
     Scaffold(
@@ -101,7 +110,6 @@ fun FEHome(viewModel: FEHomeViewModel, navController: NavHostController) {
             }
         }
     }
-
 }
 
 

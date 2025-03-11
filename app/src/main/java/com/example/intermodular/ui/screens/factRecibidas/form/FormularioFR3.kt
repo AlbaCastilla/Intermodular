@@ -52,6 +52,10 @@ fun FuncionesFormularioFR3(
 
     val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        viewModel.cargarDatosUsuario(context)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
