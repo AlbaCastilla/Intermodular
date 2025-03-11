@@ -46,7 +46,7 @@ fun FEHome(viewModel: FEHomeViewModel, navController: NavHostController) {
         viewModel.cargarDatosUsuario(context)
     }
 
-    val emailUsuario by viewModel.email.observeAsState()
+    val emailUsuario by viewModel.email.observeAsState() 
 
     val companias by viewModel.companias.observeAsState(initial = emptyList())
     val direcciones by viewModel.direcciones.observeAsState(initial = emptyList())
